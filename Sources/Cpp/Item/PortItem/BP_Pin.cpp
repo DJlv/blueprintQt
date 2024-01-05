@@ -33,31 +33,12 @@ QRectF BP_Pin::boundingRect() const
     return QRectF(0, 0, 10, 10); // 定义连接点的边界矩形
 }
 
-void BP_Pin::setType(BP_Pin::PinType type)
-{
-    m_type = type;
-}
 
-void BP_Pin::setInTiTle(QString title)
-{
-    InTiTle = title;
-}
 
-void BP_Pin::setOutTitle(QString title)
-{
-    OutTitle = title;
-}
-
-BP_Pin::BP_Pin(QGraphicsItem* parent){
-}
-
-BP_Pin::BP_Pin(BP_Pin::PinType type, QGraphicsItem *parent) : QGraphicsItem(parent), m_type(type) {
-    setInTiTle("in");
-    setOutTitle("out");
+BP_Pin::BP_Pin(PinType type, QGraphicsItem *parent) : m_type(type) {
 
     port_color = QColor("#FFFFFF");
-    port_type = PinvType::port_type_in;
+    port_type = PinType::port_type_in;
 
     prot_lable_size = port_lable.size() * font_size;
-    prot_width = prot_icon_size + prot_lable_size;
 }

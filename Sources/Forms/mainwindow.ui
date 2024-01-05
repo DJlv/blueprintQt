@@ -15,9 +15,9 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
-    <widget class="GridBackgroundView" name="graphicsView">
+    <widget class="BP_GridBackgroundView" name="graphicsView">
      <property name="styleSheet">
-      <string notr="true">background-color: #363636</string>
+      <string notr="true">background-color: #696969</string>
      </property>
      <property name="interactive">
       <bool>true</bool>
@@ -76,7 +76,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GridBackgroundView</class>
+   <class>BP_GridBackgroundView</class>
    <extends>QGraphicsView</extends>
    <header location="global">gridbackgroundview.h</header>
   </customwidget>

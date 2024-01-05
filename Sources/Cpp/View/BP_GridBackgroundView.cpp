@@ -97,7 +97,7 @@ void BP_GridBackgroundView::mousePressEvent(QMouseEvent *event) {
     BP_BasePort *nodeport = dynamic_cast<BP_BasePort *>(item);
     BP_Edge *edge = dynamic_cast<BP_Edge *>(item);
 
-    if(edge) {
+    if (edge) {
         BP_BasePort *startEdgePort = edge->source_port;
         BP_BasePort *endEdgePort = edge->des_port;
         scene()->removeItem(edge);
@@ -105,6 +105,8 @@ void BP_GridBackgroundView::mousePressEvent(QMouseEvent *event) {
         startEdgePort->edgeList.removeAll(edge);
         endEdgePort->edgeList.removeAll(edge);
         node->edgeList.removeAll(edge);
+        qDebug() << "edge:::" << startEdgePort->edgeList.size() << endEdgePort->edgeList.size();
+        startEdgePort->edgeList.removeAll(edgeItem);
         startEdgePort->update();
         endEdgePort->update();
 
@@ -125,7 +127,7 @@ void BP_GridBackgroundView::leftButton(const QMouseEvent *event) {
     QGraphicsItem *item = itemAt(event->pos());
 
     BP_BasePort *nodeport = dynamic_cast<BP_BasePort *>(item);
-    qDebug() << "edge" << bool (edge);
+    qDebug() << "edge" << bool(edge);
     if (nodeport) {
         nodeport->flage = true;
         creat_dragging_edge(nodeport, event);
@@ -151,15 +153,16 @@ void BP_GridBackgroundView::creat_dragging_edge(BP_BasePort *item, const QMouseE
     if (!item_drage) {
         item_drage = new DraggingEdge(source, source);
     }
-    qDebug() << "item->port_type"<< item->port_type;
-    qDebug() << "PinType::port_type_port_in"<< PinType::port_type_port_in;
+
+    qDebug() << "item->port_type" << item->port_type;
+    qDebug() << "PinType::port_type_port_in" << PinType::port_type_port_in;
 
     if (item->port_type == PinType::port_type_port_in) {
         drage_from_edge = true;
     } else if (item->port_type == PinType::port_type_port_out) {
         drage_from_edge = false;
     }
-    if(fledge) {
+    if (fledge) {
         scene()->addItem(item_drage);
     } else {
         scene()->removeItem(item_drage);
@@ -219,9 +222,9 @@ void BP_GridBackgroundView::update_drage_edge(QMouseEvent *event) {
     if (item_drage) {
         item_drage->update_edge_drage(pos, drage_from_edge);
     }
-    if(n == 2) {
+    if (n == 2) {
         item_drage = nullptr;
-        n= 0;
+        n = 0;
     }
 }
 

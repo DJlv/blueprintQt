@@ -25,13 +25,9 @@ public:
     explicit BP_BasePort(QGraphicsItem *parent = nullptr);
 
 public:
-
-
-
-public:
     explicit BP_BasePort(PinType type, QGraphicsItem *parent = nullptr);
-    void setInTiTle(QString title);
-    void setOutTitle(QString title);
+//    void setInTiTle(QString title);
+//    void setOutTitle(QString title);
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     QRectF boundingRect() const override;
@@ -49,7 +45,7 @@ public:
     QList<BP_Edge*> edgeList;
     BP_BaseNode* node;
     void add_Edge(BP_Edge* edgeItem);
-    void add_to_parent_node(BP_BaseNode* nodeItem) ;
+    void add_to_parent_node(BP_BaseNode* nodeItem);
 };
 
 

@@ -44,22 +44,22 @@ void BP_BasePort::add_Edge(BP_Edge* edgeItem)
 {
     edgeList.append(edgeItem);
 }
-void BP_BasePort::setInTiTle(QString title)
-{
-    InTiTle = title;
-}
-
-void BP_BasePort::setOutTitle(QString title)
-{
-    OutTitle = title;
-}
+//void BP_BasePort::setInTiTle(QString title)
+//{
+//    InTiTle = title;
+//}
+//
+//void BP_BasePort::setOutTitle(QString title)
+//{
+//    OutTitle = title;
+//}
 
 BP_BasePort::BP_BasePort(QGraphicsItem* parent){
 }
 
 BP_BasePort::BP_BasePort(PinType type, QGraphicsItem *parent) : QGraphicsItem(parent), port_type(type) {
-    setInTiTle("in");
-    setOutTitle("out");
+//    setInTiTle("in");
+//    setOutTitle("out");
 
     port_color = QColor("#07e006");
     update();

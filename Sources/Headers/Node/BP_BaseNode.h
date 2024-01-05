@@ -14,7 +14,7 @@
 #include <QString>
 #include <QGraphicsSceneMouseEvent>
 #include "Port/BP_BasePort.h"
-#include <Item/PortItem/BP_Pin.h>
+//#include <Item/PortItem/BP_Pin.h>
 #include <Edge/BP_Edge.h>
 #include "Port//PinType.h"
 class BP_BasePort;

@@ -19,6 +19,7 @@
 #include "Node/BP_BaseNode.h"
 #include "Item/NodeItem/BP_PrintNode.h"
 #include "Port/BP_BasePort.h"
+#include <QPoint>
 
 /**
  * GridBackgroundView
@@ -55,7 +56,7 @@ public:
 
     bool drag_edge_mode =false;
     bool drage_from_edge = true;
-    DraggingEdge* item_drage;
+    DraggingEdge* item_drage = nullptr;
 private:
 
     bool fledge=true;

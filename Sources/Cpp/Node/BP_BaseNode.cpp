@@ -81,14 +81,14 @@ void BP_BaseNode::setNodeTitle(const QString &title) {
 
 void BP_BaseNode::drawInputPins(QPainter *painter) {
     // 在节点左侧绘制输入连接点
-    BP_Pin *pin = new BP_Pin(BP_Pin::Input, this);
-    pin->setPos(10, 5);
+//    BP_Pin *pin = new BP_Pin(BP_Pin::Input, this);
+//    pin->setPos(10, 5);
 }
 
 void BP_BaseNode::drawOutputPins(QPainter *painter) {
     // 在节点右侧绘制输出连接点
-    BP_Pin *pin = new BP_Pin(BP_Pin::Output, this);
-    pin->setPos(175, 5);
+//    BP_Pin *pin = new BP_Pin(BP_Pin::Output, this);
+//    pin->setPos(175, 5);
 }
 
 void BP_BaseNode::Simulation() {

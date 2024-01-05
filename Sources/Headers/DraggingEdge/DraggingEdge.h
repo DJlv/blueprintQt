@@ -10,6 +10,9 @@
 #include <QPen>
 #include <QPainter>
 #include <QGraphicsDropShadowEffect>
+/**
+ * 移动连接线
+ */
 class DraggingEdge:public QObject, public QGraphicsItem {
 Q_OBJECT
 public:
