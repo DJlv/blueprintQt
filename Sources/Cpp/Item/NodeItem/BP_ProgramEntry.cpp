@@ -4,7 +4,8 @@
 
 #include "Item/NodeItem/BP_ProgramEntry.h"
 BP_ProgramEntry::BP_ProgramEntry(QGraphicsItem* parent): BP_BaseNode(parent) {
-    setNodeTitle("Run");
+    BP_BaseNode::Title = "Run";
+    BP_BaseNode::Color = "#0000EE";
 }
 
 QRectF BP_ProgramEntry::boundingRect() const {

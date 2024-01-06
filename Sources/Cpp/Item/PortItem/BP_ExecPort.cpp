@@ -3,15 +3,29 @@
 //
 
 #include "Item/PortItem/BP_ExecPort.h"
-
-BP_ExecPort::BP_ExecPort(QGraphicsItem *parent) {
-
+BP_ExecPort::BP_ExecPort(PinType type,QGraphicsItem* parent): BP_BasePort(parent) {
+    BP_BasePort::Title = "print";
+    BP_BasePort::Color = "#00EEEE";
+    BP_BasePort::port_type = type;
+    update();
 }
-BP_ExecPort::BP_ExecPort(PinType type, QGraphicsItem *parent) : BP_BasePort(type, parent) {
 
+QRectF BP_ExecPort::boundingRect() const {
+    return QRectF(0, 0, 15, 15); // 定义节点的边界矩形
 }
+
+BP_ExecPort::BP_ExecPort(QGraphicsItem *parent) : BP_BasePort(parent) {
+    BP_BasePort::Title = "print";
+    BP_BasePort::Color = "#00EEEE";
+    BP_BasePort::port_type = PinType::port_type_port_in;
+}
+
+
+void BP_ExecPort::Simulation() {
+    qDebug() << "print";
+}
+
 void BP_ExecPort::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-
     QFont font("Consolas", 12);  // 创建字体对象并指定字体名称和大小
     painter->setFont(font);
     QPen pen_default = QPen(QColor(port_color));
@@ -39,17 +53,3 @@ void BP_ExecPort::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     }
     update();
 }
-
-QRectF BP_ExecPort::boundingRect() const {
-    return QRectF(0, 0, 15, 15); // 定义连接点的边界矩形
-}
-
-void BP_ExecPort::add_Edge(BP_Edge *edgeItem) {
-    edgeList.append(edgeItem);
-}
-
-void BP_ExecPort::add_to_parent_node(BP_BaseNode *nodeItem) {
-    node = nodeItem;
-}
-
-

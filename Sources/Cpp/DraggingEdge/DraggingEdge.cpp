@@ -69,7 +69,6 @@ void DraggingEdge::update_edge_drage(QPointF* position,bool flage) {
     } else {
         des_pos =  position;
     }
-//    des_pos =  position;
     update();
 }
 QRectF DraggingEdge::boundingRect() const{
@@ -80,8 +79,22 @@ QRectF DraggingEdge::boundingRect() const{
     float tangent = float(yheight) / xwidth * 0.5;
     if(tangent >= 1) tangent =1;
     tangent *= xwidth;
+    path.moveTo(source_pos->x()  + 15,source_pos->y() + 7);
+    path.cubicTo(QPointF(source_pos->x() + 7 + tangent,source_pos->y() + 7),QPointF(des_pos->x()-tangent + 7,des_pos->y() + 7),QPointF(des_pos->x(),des_pos->y() + 7));
+
+    return path.boundingRect();
+}
+
+QPainterPath DraggingEdge::shape() const {
+    QPainterPath path = QPainterPath();
+    long xwidth = abs(source_pos->x()-des_pos->x());
+    long yheight = abs(source_pos->y()-des_pos->y());
+
+    float tangent = float(yheight) / xwidth * 0.5;
+    if(tangent >= 1) tangent =1;
+    tangent *= xwidth;
     path.moveTo(source_pos->x() + 7,source_pos->y() + 7);
     path.cubicTo(QPointF(source_pos->x() + 7 + tangent,source_pos->y() + 7),QPointF(des_pos->x()-tangent + 7,des_pos->y() + 7),QPointF(des_pos->x() + 7,des_pos->y() + 7));
 
-    return path.boundingRect();
+    return path;
 }

@@ -21,6 +21,7 @@ public:
 public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR) override;
     QRectF boundingRect() const override;
+    QPainterPath shape() const;
 public:
     void update_edge_drage(QPointF *position, bool flage);
 

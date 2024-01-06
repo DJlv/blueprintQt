@@ -97,7 +97,7 @@ void BP_GridBackgroundView::mousePressEvent(QMouseEvent *event) {
     BP_BasePort *nodeport = dynamic_cast<BP_BasePort *>(item);
     BP_Edge *edge = dynamic_cast<BP_Edge *>(item);
 
-    if (edge) {
+    if (event->button() == Qt::LeftButton && edge) {
         BP_BasePort *startEdgePort = edge->source_port;
         BP_BasePort *endEdgePort = edge->des_port;
         scene()->removeItem(edge);
@@ -109,6 +109,7 @@ void BP_GridBackgroundView::mousePressEvent(QMouseEvent *event) {
         startEdgePort->edgeList.removeAll(edgeItem);
         startEdgePort->update();
         endEdgePort->update();
+        qDebug() << "edge:::::左键点击::::::::::::::::"<< edge->boundingRect();
 
     }
     if (event->button() == Qt::LeftButton && blueprintNode) {
@@ -242,6 +243,7 @@ void BP_GridBackgroundView::dealmouseRight(QMouseEvent *event) {
     QGraphicsView::mousePressEvent(event);
 }
 
+
 void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode) const {
 
     if (event->button() == Qt::RightButton && !blueprintNode) {
@@ -249,8 +251,8 @@ void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_B
         QMenu menu;
         menu.setStyleSheet("QMenu { background-color: #696969;border-radius: 10px; }");
         QAction *print = menu.addAction("print");
-        QAction *action2 = menu.addAction("Action 2");
-        QAction *action3 = menu.addAction("Action 2");
+        QAction *run = menu.addAction("run");
+        QAction *text = menu.addAction("text");
         QAction *action4 = menu.addAction("Action 2");
 
         QAction *selectedAction = menu.exec(event->globalPos());
@@ -259,8 +261,19 @@ void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_B
             item->setPos(mapToScene(event->pos()).x(), mapToScene(event->pos()).y());
             scene()->addItem(item);
             BP_Variable::NodeLists.append(item);
-        } else if (selectedAction == action2) {
-            // 执行 Action 2 对应的操作
+        } else if (selectedAction == run) {
+            BP_BaseNode *item = new BP_ProgramEntry;
+            item->setPos(mapToScene(event->pos()).x(), mapToScene(event->pos()).y());
+            scene()->addItem(item);
+            BP_Variable::NodeLists.append(item);
+        } else if (selectedAction == text) {
+            QGraphicsSimpleTextItem *simpleTextItem=new QGraphicsSimpleTextItem;
+            simpleTextItem->setBrush(Qt::white);
+            simpleTextItem->setText("QGraphicsSimpleTextItem Engine 中文 123");
+            simpleTextItem->setFont(QFont("华文琥珀",12));
+            simpleTextItem->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
+            simpleTextItem->setPos(mapToScene(event->pos()).x(), mapToScene(event->pos()).y());
+            scene()->addItem(simpleTextItem);
         }
     }
 }

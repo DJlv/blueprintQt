@@ -31,10 +31,6 @@ class BP_GridBackgroundView : public QGraphicsView {
     Q_OBJECT
 public:
     explicit BP_GridBackgroundView(QWidget *parent = nullptr);
-
-
-    void addNodeEdge(BP_BasePort *source_port, BP_BasePort *des_port) const;
-
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void drawBackground(QPainter *painter, const QRectF &rect);
@@ -59,7 +55,7 @@ public:
     DraggingEdge* item_drage = nullptr;
 private:
 
-    bool fledge=true;
+    bool fledge =true;
     BP_Edge *edge;
     BP_Edge *edgeItem;
     int n = 0; // 左键点击次数
@@ -68,6 +64,11 @@ private:
 
     void nodeRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode);
 
+    /**
+     * 右键点击不是 蓝图节点 todo 差判断是否引脚 连接线等
+     * @param event
+     * @param blueprintNode
+     */
     void viewRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode) const;
 
     void addNodeEdge(BP_BaseNode *startNode, BP_BaseNode *endNode, BP_BasePort *source_port, BP_BasePort *des_port);

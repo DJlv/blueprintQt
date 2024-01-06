@@ -20,27 +20,26 @@ class  BP_BaseNode;
 class BP_Edge;
 
 class BP_BasePort :public QObject,public QGraphicsItem {
-Q_OBJECT
+    Q_OBJECT
 public:
     explicit BP_BasePort(QGraphicsItem *parent = nullptr);
 
 public:
     explicit BP_BasePort(PinType type, QGraphicsItem *parent = nullptr);
-//    void setInTiTle(QString title);
-//    void setOutTitle(QString title);
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
-    QRectF boundingRect() const override;
-
+//    QRectF boundingRect() const override;
+    virtual void Simulation();
 
 public:
+    QString Title;
+    QString Color;
     QString InTiTle;
     QString OutTitle;
 
     QString port_lable;
     QColor port_color;
     int port_type;
-    int font_size = 12;
     bool flage = false;
     QList<BP_Edge*> edgeList;
     BP_BaseNode* node;

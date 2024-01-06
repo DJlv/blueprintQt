@@ -32,20 +32,14 @@ public:
      * @param parent
      */
     explicit BP_BaseNode(QGraphicsItem *parent = nullptr);
-    /**
-     * 获取 标题 设置标题
-     * @param title
-     */
-    void setNodeTitle(const QString &title);
-    QString getNodeTitle() const;
-
 
     QList<BP_BasePort*> portInList;
     QList<BP_BasePort*> portOutList;
     QList<BP_Edge*> edgeList;
 
-private:
+public:
     QString Title; /**标题*/
+    QString Color; /*标题背景色*/
 protected:
     /**节点图形区域大小*/
 //    QRectF boundingRect() const override;

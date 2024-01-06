@@ -40,5 +40,6 @@ BP_Pin::BP_Pin(PinType type, QGraphicsItem *parent) : m_type(type) {
     port_color = QColor("#FFFFFF");
     port_type = PinType::port_type_in;
 
-    prot_lable_size = port_lable.size() * font_size;
+    prot_lable_size = port_lable.size();
+    update();
 }

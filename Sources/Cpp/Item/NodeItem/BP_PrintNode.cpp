@@ -4,7 +4,8 @@
 
 #include "Item/NodeItem/BP_PrintNode.h"
 BP_PrintNode::BP_PrintNode(QGraphicsItem* parent): BP_BaseNode(parent) {
-    setNodeTitle("print");
+    BP_BaseNode::Title = "print";
+    BP_BaseNode::Color = "#00EEEE";
 }
 
 QRectF BP_PrintNode::boundingRect() const {

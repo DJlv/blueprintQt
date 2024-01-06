@@ -6,7 +6,7 @@
 #include "mainwindow.h"
 #include "Forms/ui_MainWindow.h"
 #include "Scence/BP_GridGroupScence.h"
-
+#include <QGraphicsSimpleTextItem>
 MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -18,36 +18,20 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::init() {
-    BP_Variable::AddNodeToList();
+//    BP_Variable::AddNodeToList();
+    BP_Variable::NodeLists.append(new BP_ProgramEntry);
     scene = new BP_GridGroupScence();
-
+//    scene->addItem(item);
     for(BP_BaseNode *item: BP_Variable::NodeLists) {
         /** 项添加到场景*/
-        item->setPos(16000,16000);
+        item->setPos(160,160);
         scene->addItem(item);
-        scene->clearSelection();
-        item->setSelected(false);
     }
 
-//    testAddNode();
-    scene->clearSelection();
-
     ui->graphicsView->setScene(scene);
+    QString st="添加一行";
+    ui->textEdit->insertPlainText(st +='\n');
+    update();
 }
 
-void MainWindow::testAddNode() {
-    BP_BaseNode *item01= new BP_PrintNode;
-    item01->setPos(15900,15900);
-    scene->addItem(item01);
-
-    BP_BaseNode *item02= new BP_PrintNode;
-    item02->setPos(16150,16150);
-    scene->addItem(item02);
-    scene->clearSelection();
-    item01->setSelected(false);
-    item02->setSelected(false);
-
-    BP_Variable::NodeLists.append(item01);
-    BP_Variable::NodeLists.append(item02);
-}
 

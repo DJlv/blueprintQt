@@ -27,8 +27,6 @@ private:
 private:
     QGraphicsScene *scene;
     Ui::MainWindow *ui;
-
-    void testAddNode();
 };
 
 
