@@ -9,11 +9,13 @@
 #include "Item/NodeItem/BP_PrintNode.h"
 #include <QList>
 #include <QString>
+#include <QGroupBox>
 #include "Edge/BP_Edge.h"
 
 namespace BP_Variable {
     extern QList<BP_BaseNode*> NodeLists;
     extern QList<BP_Edge*> EdgeLists;
+    extern QGroupBox* qGroupBox;
     void AddNodeToList();
 };
 

@@ -24,9 +24,12 @@ public:
 
 private:
     void init();
+public slots:
+    void handleButtonClicked();
 private:
     QGraphicsScene *scene;
     Ui::MainWindow *ui;
+    QLineEdit* lineEdit;
 };
 
 

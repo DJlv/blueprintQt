@@ -40,6 +40,9 @@ protected:
 private:
     void dealmouseRight(QMouseEvent *event);  // 点击右键
 
+
+signals:
+    void buttonClicked();
 public:
     bool drag_mode = false;
 

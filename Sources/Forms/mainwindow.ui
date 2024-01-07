@@ -69,6 +69,12 @@
    <extends>QGraphicsView</extends>
    <header location="global">View/BP_GridBackgroundView.h</header>
   </customwidget>
+  <customwidget>
+   <class>QGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header location="global">QGroupBox</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

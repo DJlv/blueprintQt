@@ -17,6 +17,8 @@
 //#include <Item/PortItem/BP_Pin.h>
 #include <Edge/BP_Edge.h>
 #include "Port//PinType.h"
+#include <QtWidgets/QGroupBox>
+
 class BP_BasePort;
 class BP_Edge;
 /**
@@ -32,6 +34,12 @@ public:
      * @param parent
      */
     explicit BP_BaseNode(QGraphicsItem *parent = nullptr);
+    virtual void Simulation();
+    virtual void SimulationStyle();
+
+
+
+
 
     QList<BP_BasePort*> portInList;
     QList<BP_BasePort*> portOutList;
@@ -49,7 +57,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void drawInputPins(QPainter *painter);
     void drawOutputPins(QPainter *painter);
-    virtual void Simulation();
+
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     void drawChangePins(QPainter *pPainter);
 

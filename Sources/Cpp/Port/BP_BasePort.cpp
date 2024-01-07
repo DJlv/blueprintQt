@@ -13,7 +13,7 @@ void BP_BasePort::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     painter->setPen(pen_default);
 
     if (port_type == PinType::port_type_port_in) {
-        painter->drawText(Title.size()+ 10, 12, Title);
+        painter->drawText(Title.size() + 10, 12, Title);
     } else if (port_type == PinType::port_type_port_out) {
         painter->drawText(-Title.size() * 9, 12, Title);
     }
@@ -27,7 +27,7 @@ void BP_BasePort::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         QColor color(Color);
         painter->setBrush(color);  // 设置填充颜色或样式
         painter->drawEllipse(0, 0, 15, 15);
-        painter->drawEllipse(0, 0, 15, 15);
+//        painter->drawEllipse(0, 0, 10, 10);
     }
     if (edgeList.size() > 0) {
         flage = true;

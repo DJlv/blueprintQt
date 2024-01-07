@@ -85,7 +85,6 @@ void BP_BaseNode::drawOutputPins(QPainter *painter) {
 void BP_BaseNode::Simulation() {
     printf("Add Code \n virtual void Simulation() noexcept\n {\n //Simulation Code \n} in class");
 }
-
 void BP_BaseNode::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsItem::mouseMoveEvent(event);
 }
@@ -138,4 +137,8 @@ QVariant BP_BaseNode::itemChange(GraphicsItemChange change, const QVariant &valu
         }
     }
     return QGraphicsItem::itemChange(change, value);
+}
+
+void BP_BaseNode::SimulationStyle() {
+
 }

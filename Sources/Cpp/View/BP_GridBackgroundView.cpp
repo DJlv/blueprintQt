@@ -105,14 +105,13 @@ void BP_GridBackgroundView::mousePressEvent(QMouseEvent *event) {
         startEdgePort->edgeList.removeAll(edge);
         endEdgePort->edgeList.removeAll(edge);
         node->edgeList.removeAll(edge);
-        qDebug() << "edge:::" << startEdgePort->edgeList.size() << endEdgePort->edgeList.size();
         startEdgePort->edgeList.removeAll(edgeItem);
         startEdgePort->update();
         endEdgePort->update();
-        qDebug() << "edge:::::左键点击::::::::::::::::"<< edge->boundingRect();
 
     }
     if (event->button() == Qt::LeftButton && blueprintNode) {
+        emit(buttonClicked());
         item->setSelected(false);
     }
     if (event->button() == Qt::LeftButton && nodeport) {
@@ -128,7 +127,6 @@ void BP_GridBackgroundView::leftButton(const QMouseEvent *event) {
     QGraphicsItem *item = itemAt(event->pos());
 
     BP_BasePort *nodeport = dynamic_cast<BP_BasePort *>(item);
-    qDebug() << "edge" << bool(edge);
     if (nodeport) {
         nodeport->flage = true;
         creat_dragging_edge(nodeport, event);

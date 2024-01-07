@@ -9,6 +9,7 @@
 
 #include <QGraphicsItem>
 #include "Port/BP_BasePort.h"
+#include <QtWidgets/QGroupBox>
 
 class BP_TextPin: public BP_BasePort {
 Q_OBJECT
