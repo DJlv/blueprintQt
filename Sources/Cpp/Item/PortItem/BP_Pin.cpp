@@ -6,7 +6,7 @@
 
 
 void BP_Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    QFont font("Consolas", 12);  // 创建字体对象并指定字体名称和大小
+    QFont font("SimSun", 12);  // 创建字体对象并指定字体名称和大小
     painter->setFont(font);
 
 

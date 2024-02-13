@@ -153,9 +153,6 @@ void BP_GridBackgroundView::creat_dragging_edge(BP_BasePort *item, const QMouseE
         item_drage = new DraggingEdge(source, source);
     }
 
-    qDebug() << "item->port_type" << item->port_type;
-    qDebug() << "PinType::port_type_port_in" << PinType::port_type_port_in;
-
     if (item->port_type == PinType::port_type_port_in) {
         drage_from_edge = true;
     } else if (item->port_type == PinType::port_type_port_out) {
@@ -167,6 +164,7 @@ void BP_GridBackgroundView::creat_dragging_edge(BP_BasePort *item, const QMouseE
         scene()->removeItem(item_drage);
         fledge = true;
     }
+    update();
 }
 
 void BP_GridBackgroundView::middleButton(const QMouseEvent *event) {
@@ -177,15 +175,16 @@ void BP_GridBackgroundView::middleButton(const QMouseEvent *event) {
     drag_mode = true;
     QMouseEvent click_event = QMouseEvent(QEvent::MouseButtonRelease, event->localPos(), Qt::LeftButton,
                                           Qt::NoButton, event->modifiers());
+
     mousePressEvent(&click_event);
 }
 
-
+// 放大缩小 存在Bug 当前不使用
 void BP_GridBackgroundView::wheelEvent(QWheelEvent *event) {
     if (!drag_mode) {
         if ((event->angleDelta().y() > 0) && (m_dOriScale >= 15))//最大放大到原始图像的50倍
             return;
-        else if ((event->angleDelta().y() < 0) && (m_dOriScale <= 0.01))//图像缩小到自适应大小之后就不继续缩小
+        else if ((event->angleDelta().y() < 0) && (m_dOriScale <= 0.5))//图像缩小到自适应大小之后就不继续缩小
             return;
         QTransform transform;
         qreal scaleFactor = transform.m11();
@@ -197,7 +196,6 @@ void BP_GridBackgroundView::wheelEvent(QWheelEvent *event) {
             this->scale(1.0 / 1.2, 1.0 / 1.2);
         update();
     }
-
 }
 
 void BP_GridBackgroundView::mouseMoveEvent(QMouseEvent *event) {
@@ -268,7 +266,7 @@ void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_B
             QGraphicsSimpleTextItem *simpleTextItem=new QGraphicsSimpleTextItem;
             simpleTextItem->setBrush(Qt::white);
             simpleTextItem->setText("QGraphicsSimpleTextItem Engine 中文 123");
-            simpleTextItem->setFont(QFont("华文琥珀",12));
+            simpleTextItem->setFont(QFont("SimSun",12));
             simpleTextItem->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
             simpleTextItem->setPos(mapToScene(event->pos()).x(), mapToScene(event->pos()).y());
             scene()->addItem(simpleTextItem);
@@ -296,14 +294,21 @@ void BP_GridBackgroundView::nodeRightButton(const QMouseEvent *event, const BP_B
             // 执行 Action 2 对应的操作
         }
     }
+    update();
 }
 
 void BP_GridBackgroundView::addNodeEdge(BP_BaseNode *startNode, BP_BaseNode *endNode, BP_BasePort *source_port,
                                         BP_BasePort *des_port) {
     edge = new BP_Edge(source_port, des_port);
 
+//    source_port->edgeList.append(edge);
+//    des_port->edgeList.append(edge);
+
     source_port->add_Edge(edge);
     des_port->add_Edge(edge);
+    source_port->update();
+    des_port->update();
+
     startNode->edgeList.append(edge);
     endNode->edgeList.append(edge);
     scene()->addItem(edge);

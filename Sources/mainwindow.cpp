@@ -34,10 +34,9 @@ void MainWindow::init() {
     BP_GroupBox* groupBox = new BP_GroupBox();
 
     //    QLabel* label = new QLabel("Label Text", ui->groupBox); // 将标签添加到 QGroupBox
-//    QPushButton* button = new QPushButton("Button Text", ui->groupBox); // 将按钮添加到 QGroupBox
-////
-//    QVBoxLayout* layout = new QVBoxLayout(ui->groupBox); // 使用垂直布局管理器
-//    lineEdit = new QLineEdit();
+    //    QPushButton* button = new QPushButton("Button Text", ui->groupBox); // 将按钮添加到 QGroupBox
+    //    QVBoxLayout* layout = new QVBoxLayout(ui->groupBox); // 使用垂直布局管理器
+    //    lineEdit = new QLineEdit();
 //    layout->addWidget(lineEdit);
 //    layout->addWidget(button);
 

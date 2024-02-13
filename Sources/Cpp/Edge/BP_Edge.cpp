@@ -39,7 +39,7 @@ void BP_Edge::update_edge_path(){
     float tangent = float(yheight) / xwidth * 0.5;
     if(tangent >= 1) tangent =1;
     tangent *= xwidth;
-    path.moveTo(source_port->scenePos().x() + 15,source_port->scenePos().y() + 7);
+    path.moveTo(source_port->scenePos().x() + 15 + 5,source_port->scenePos().y() + 7);
     path.cubicTo(QPointF(source_port->scenePos().x() + 7 + tangent,source_port->scenePos().y() + 7),QPointF(des_port->scenePos().x()-tangent + 7,des_port->scenePos().y() + 7),QPointF(des_port->scenePos().x(),des_port->scenePos().y() + 7));
     this->paths = path;
 }
@@ -59,7 +59,7 @@ BP_Edge::BP_Edge(BP_BasePort *source_port_item,BP_BasePort *des_port_item,QGraph
     edge_color = "#FFFFFF";
     pen_default = QPen(QColor(edge_color));
     pen_default.setWidthF(4);
-    setZValue(2);
+    setZValue(-1);
     //实例阴影shadow
     shadow = new QGraphicsDropShadowEffect(this);
     //设置阴影距离

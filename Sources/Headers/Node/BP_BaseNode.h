@@ -37,31 +37,26 @@ public:
     virtual void Simulation();
     virtual void SimulationStyle();
 
-
-
-
-
     QList<BP_BasePort*> portInList;
     QList<BP_BasePort*> portOutList;
+
+
     QList<BP_Edge*> edgeList;
 
+    int  height = 30;
 public:
     QString Title; /**标题*/
     QString Color; /*标题背景色*/
 protected:
     /**节点图形区域大小*/
-//    QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    void drawInputPins(QPainter *painter);
-    void drawOutputPins(QPainter *painter);
+
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     void drawChangePins(QPainter *pPainter);
-
-    void pushPins(PinType type,int *i,int *m);
 };
 
 

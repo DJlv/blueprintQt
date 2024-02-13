@@ -11,10 +11,10 @@
 
 BP_BaseNode::BP_BaseNode(QGraphicsItem *parent) : QGraphicsItem(parent) {
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+
     setFlag(ItemIsMovable);  // 允许图形元素被移动
     setFlag(ItemIsSelectable);  // 允许图形元素被选择
     setFlag(ItemSendsGeometryChanges);
-    setZValue(-1);
 }
 
 void BP_BaseNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -28,7 +28,8 @@ void BP_BaseNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         painter->setPen(pen);
     }
     int x = 200;
-    int y = 100;
+
+    int y = portInList.size() * height > portOutList.size() * height ? portInList.size() * height : portOutList.size() * height;
     if (Title == "Run") {
         y = 80;
     }
@@ -36,31 +37,21 @@ void BP_BaseNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     painter->drawRoundedRect(0, 0, x, y, yj, yj); // 参数依次为矩形左上角坐标、宽度、高度、横向圆角半径、纵向圆角半径
     QColor color(Color); // 设置标题背景色
     painter->setBrush(color);
-    // 创建线性渐变
-//    QLinearGradient gradient(10, 10, 110, 110);
-//    gradient.setColorAt(0, Qt::red);
-//    gradient.setColorAt(1, Qt::blue);
+
 
     QPainterPath path;
     path.moveTo(15, 0);
     path.arcTo(0, 0, yj * 2, yj * 2, 90.0f, 90.0f);
     path.lineTo(0, 30);
-    path.lineTo(200, 30);
+    path.lineTo(x, 30);
     path.arcTo(x - 2 * yj, 0, 2 * yj, 2 * yj, 0.0f, 90.0f);
     path.lineTo(yj, 0);
     painter->drawPath(path);
 
     painter->setPen(Qt::white); // 设置标题文字颜色
-    QFont font("Arial", 16);  // 创建字体对象并指定字体名称和大小
+    QFont font("SimSun", 16);  // 创建字体对象并指定字体名称和大小
     painter->setFont(font);    // 将字体应用到绘制上下文中
-    painter->drawText(200 / 3, 22, Title);
-
-    // 绘制函数输入输出连接点
-    if (Title != "Run") {
-        drawInputPins(painter);
-
-    }
-    drawOutputPins(painter);
+    painter->drawText(x / 3, 22, Title);
 
 
     // 绘制变量输入输出连接点
@@ -70,21 +61,10 @@ void BP_BaseNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 }
 
-void BP_BaseNode::drawInputPins(QPainter *painter) {
-    // 在节点左侧绘制输入连接点
-//    BP_Pin *pin = new BP_Pin(BP_Pin::Input, this);
-//    pin->setPos(10, 5);
-}
-
-void BP_BaseNode::drawOutputPins(QPainter *painter) {
-    // 在节点右侧绘制输出连接点
-//    BP_Pin *pin = new BP_Pin(BP_Pin::Output, this);
-//    pin->setPos(175, 5);
-}
-
 void BP_BaseNode::Simulation() {
     printf("Add Code \n virtual void Simulation() noexcept\n {\n //Simulation Code \n} in class");
 }
+
 void BP_BaseNode::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsItem::mouseMoveEvent(event);
 }
@@ -101,37 +81,28 @@ void BP_BaseNode::drawChangePins(QPainter *pPainter) {
     if (Title == "Run") {
         return;
     }
-    int i,m;
+    int i, m;
     i = 0;
-    m =0;
-    pushPins(PinType::port_type_port_in,&i,&m);
-    pushPins(PinType::port_type_port_out,&i,&m);
-    pushPins(PinType::port_type_port_in,&i,&m);
-    pushPins(PinType::port_type_port_out,&i,&m);
-}
-void BP_BaseNode::pushPins(PinType type,int *i,int *m) {
-    if(type == PinType::port_type_port_in) {
+    m = 0;
+
+    for (BP_BasePort *item: portInList) {
         // 在节点左侧绘制输入连接点
-        BP_BasePort *pin = new BP_TextPin( type,this);
-        pin->setPos(10, 40 + (*i) * 25);
-        pin->add_to_parent_node(this);
-        portInList.append(pin);
-        (*i)++;
+        item->setPos(10, 40 + i * 25);
+        item->add_to_parent_node(this);
+        i++;
     }
-    if(type == PinType::port_type_port_out) {
+    for (BP_BasePort *item: portOutList) {
         // 在节点左侧绘制输入连接点
-        BP_BasePort *pin = new BP_TextPin(type, this);
-        pin->setPos(175, 40 + *m * 25);
-        pin->add_to_parent_node(this);
-        portOutList.append(pin);
-        (*m)++;
+        item->setPos(175, 40 + m * 25);
+        item->add_to_parent_node(this);
+        m++;
     }
 }
 
 QVariant BP_BaseNode::itemChange(GraphicsItemChange change, const QVariant &value) {
     if (change == QGraphicsItem::ItemPositionChange) {
         if (edgeList.size() > 0) {
-            for (BP_Edge *edge :edgeList) {
+            for (BP_Edge *edge: edgeList) {
                 edge->update();
             }
         }

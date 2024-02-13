@@ -32,6 +32,7 @@ protected:
     virtual void Simulation();
 
 public:
+    QPainterPath path;
     QString Title;
     QString Color;
     QString InTiTle;

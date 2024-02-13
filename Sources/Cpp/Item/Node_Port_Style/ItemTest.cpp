@@ -20,7 +20,7 @@ void ItemTest::handleButtonClicked() {
 //    lineEdit->setText("12333333");
     connect(lineEdit, SIGNAL(editingFinished()), this,  SLOT(buttonClicked()));
 //    connect(lineEdit, SIGNAL(editingFinished()), x,  SLOT(slotLineEdit(QString)));
-    qDebug() << "init--------x::::"<< lineEdit->text();
+//    qDebug() << "init--------x::::"<< lineEdit->text();
 
 
     QLabel* label = new QLabel("Label Text", BP_Variable::qGroupBox); // 将标签添加到 QGroupBox
