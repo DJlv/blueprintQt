@@ -56,6 +56,7 @@ public:
     bool drag_edge_mode =false;
     bool drage_from_edge = true;
     DraggingEdge* item_drage = nullptr;
+    BP_BasePort *nodeportItem;
 private:
 
     bool fledge =true;

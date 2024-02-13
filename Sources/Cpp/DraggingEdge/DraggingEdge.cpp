@@ -43,7 +43,7 @@ DraggingEdge::DraggingEdge(QPointF *source_pos_Item, QPointF *des_pos_Item, QCol
     setAcceptHoverEvents(false);  // 允许接受鼠标悬停事件
 
     source_pos = source_pos_Item;
-    des_pos=des_pos_Item;
+    des_pos = des_pos_Item;
     edge_color = edge_color_Item;
 
     pen_default = QPen(QColor(edge_color));
@@ -95,6 +95,5 @@ QPainterPath DraggingEdge::shape() const {
     tangent *= xwidth;
     path.moveTo(source_pos->x() + 7,source_pos->y() + 7);
     path.cubicTo(QPointF(source_pos->x() + 7 + tangent,source_pos->y() + 7),QPointF(des_pos->x()-tangent + 7,des_pos->y() + 7),QPointF(des_pos->x() + 7,des_pos->y() + 7));
-
     return path;
 }

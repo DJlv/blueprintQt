@@ -3,8 +3,6 @@
 //
 
 #include "Node/BP_BaseNode.h"
-#include "Item/PortItem/BP_ExecPort.h"
-#include "Item/PortItem/BP_Pin.h"
 #include "Item/PortItem/BP_TextPin.h"
 #include <QDebug>
 #include <QMenu>
@@ -16,7 +14,9 @@ BP_BaseNode::BP_BaseNode(QGraphicsItem *parent) : QGraphicsItem(parent) {
     setFlag(ItemIsSelectable);  // 允许图形元素被选择
     setFlag(ItemSendsGeometryChanges);
 }
-
+void BP_BaseNode::add_Edge(BP_Edge *edgeItem) {
+    edgeList.append(edgeItem);
+}
 void BP_BaseNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     // 绘制节点的外观
     QBrush brush(QColor(0, 0, 30, 30));
@@ -30,8 +30,8 @@ void BP_BaseNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     int x = 200;
 
     int y = portInList.size() * height > portOutList.size() * height ? portInList.size() * height : portOutList.size() * height;
-    if (Title == "Run") {
-        y = 80;
+    if(y == 0) {
+        y = 50;
     }
     int yj = 15;
     painter->drawRoundedRect(0, 0, x, y, yj, yj); // 参数依次为矩形左上角坐标、宽度、高度、横向圆角半径、纵向圆角半径
@@ -57,6 +57,7 @@ void BP_BaseNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     // 绘制变量输入输出连接点
     drawChangePins(painter);
 
+
     update();
 
 }
@@ -78,24 +79,31 @@ void BP_BaseNode::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void BP_BaseNode::drawChangePins(QPainter *pPainter) {
-    if (Title == "Run") {
-        return;
-    }
     int i, m;
     i = 0;
     m = 0;
-
     for (BP_BasePort *item: portInList) {
-        // 在节点左侧绘制输入连接点
-        item->setPos(10, 40 + i * 25);
-        item->add_to_parent_node(this);
-        i++;
+        if(PinType::port_type_in == item->port_type) {
+            item->setPos(0, 0);
+            item->add_to_parent_node(this);
+        } else if(PinType::port_type_port_in == item->port_type){
+            // 在节点左侧绘制输入连接点
+            item->setPos(10, 40 + i * 25);
+            item->add_to_parent_node(this);
+            i++;
+        }
     }
     for (BP_BasePort *item: portOutList) {
-        // 在节点左侧绘制输入连接点
-        item->setPos(175, 40 + m * 25);
-        item->add_to_parent_node(this);
-        m++;
+        if(PinType::port_type_out == item->port_type) {
+            item->setPos(165, 0);
+            item->add_to_parent_node(this);
+        } else if(PinType::port_type_port_out == item->port_type){
+            // 在节点左侧绘制输入连接点
+            item->setPos(175, 40 + m * 25);
+            item->add_to_parent_node(this);
+            m++;
+        }
+
     }
 }
 
@@ -113,3 +121,5 @@ QVariant BP_BaseNode::itemChange(GraphicsItemChange change, const QVariant &valu
 void BP_BaseNode::SimulationStyle() {
 
 }
+
+

@@ -26,26 +26,22 @@ public:
 
 public:
     explicit BP_BasePort(PinType type, QGraphicsItem *parent = nullptr);
-protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
-//    QRectF boundingRect() const override;
+    void add_Edge(BP_Edge* edgeItem);
+    void add_to_parent_node(BP_BaseNode* nodeItem);
     virtual void Simulation();
-
 public:
+    int n = 0;
     QPainterPath path;
     QString Title;
     QString Color;
     QString InTiTle;
     QString OutTitle;
 
-    QString port_lable;
-    QColor port_color;
     int port_type;
     bool flage = false;
     QList<BP_Edge*> edgeList;
     BP_BaseNode* node;
-    void add_Edge(BP_Edge* edgeItem);
-    void add_to_parent_node(BP_BaseNode* nodeItem);
+
 };
 
 

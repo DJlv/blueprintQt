@@ -3,11 +3,7 @@
 //
 
 #include "View/BP_GridBackgroundView.h"
-#include <iostream>
-#include <QDebug>
 #include <QMenu>
-#include <mainwindow.h>
-#include <Item/PortItem/BP_Pin.h>
 #include <QtMath>
 #include <QVector>
 #include <Qpainter>
@@ -135,6 +131,7 @@ void BP_GridBackgroundView::leftButton(const QMouseEvent *event) {
 }
 
 void BP_GridBackgroundView::creat_dragging_edge(BP_BasePort *item, const QMouseEvent *event) {
+
     QPointF *source = new QPointF(item->scenePos());
     if (item_drage) {
         QPoint port_source_pos = mapFromScene(QPoint(item_drage->source_pos->x(), item_drage->source_pos->y()));
@@ -143,19 +140,28 @@ void BP_GridBackgroundView::creat_dragging_edge(BP_BasePort *item, const QMouseE
         QGraphicsItem *port_source_pos_item = itemAt(port_source_pos);
         QGraphicsItem *port_dos_pos_item = itemAt(port_dos_pos);
 
-        BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(port_source_pos_item);
         BP_BasePort *nodeport2 = dynamic_cast<BP_BasePort *>(port_dos_pos_item);
+        BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(port_source_pos_item);
+        if(!nodeport2) {
+            nodeport2 = nodeportItem;
+        }
+        if(!nodeport1) {
+            nodeport1 = nodeportItem;
+        }
         if (nodeport1 && nodeport2) {
             addNodeEdge(nodeport1->node, nodeport2->node, nodeport1, nodeport2);
         }
     }
     if (!item_drage) {
+        QGraphicsItem *item = itemAt(event->pos());
+        BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(item);
         item_drage = new DraggingEdge(source, source);
+        nodeportItem = nodeport1;
     }
 
-    if (item->port_type == PinType::port_type_port_in) {
+    if (item->port_type == PinType::port_type_port_in || item->port_type == PinType::port_type_in) {
         drage_from_edge = true;
-    } else if (item->port_type == PinType::port_type_port_out) {
+    } else if (item->port_type == PinType::port_type_port_out || item->port_type == PinType::port_type_out) {
         drage_from_edge = false;
     }
     if (fledge) {
@@ -275,7 +281,7 @@ void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_B
 }
 
 void BP_GridBackgroundView::nodeRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode) {
-    if (event->button() == Qt::RightButton && blueprintNode) {
+    if (event->button() == Qt::RightButton && blueprintNode ) {
 
         QMenu menu;
         menu.setStyleSheet("QMenu { background-color: #696969;border-radius: 10px; }");
@@ -300,18 +306,14 @@ void BP_GridBackgroundView::nodeRightButton(const QMouseEvent *event, const BP_B
 void BP_GridBackgroundView::addNodeEdge(BP_BaseNode *startNode, BP_BaseNode *endNode, BP_BasePort *source_port,
                                         BP_BasePort *des_port) {
     edge = new BP_Edge(source_port, des_port);
-
-//    source_port->edgeList.append(edge);
-//    des_port->edgeList.append(edge);
-
     source_port->add_Edge(edge);
     des_port->add_Edge(edge);
-    source_port->update();
-    des_port->update();
 
-    startNode->edgeList.append(edge);
-    endNode->edgeList.append(edge);
+    startNode->add_Edge(edge);
+    endNode->add_Edge(edge);
     scene()->addItem(edge);
     BP_Variable::EdgeLists.append(edge);
     fledge = false;
+    source_port->update();
+    des_port->update();
 }

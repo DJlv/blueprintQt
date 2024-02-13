@@ -36,7 +36,7 @@ public:
     explicit BP_BaseNode(QGraphicsItem *parent = nullptr);
     virtual void Simulation();
     virtual void SimulationStyle();
-
+    void add_Edge(BP_Edge *edgeItem);
     QList<BP_BasePort*> portInList;
     QList<BP_BasePort*> portOutList;
 
