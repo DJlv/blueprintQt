@@ -35,7 +35,6 @@ public:
      */
     explicit BP_BaseNode(QGraphicsItem *parent = nullptr);
     virtual void Simulation();
-    virtual void SimulationStyle();
     void add_Edge(BP_Edge *edgeItem);
     QList<BP_BasePort*> portInList;
     QList<BP_BasePort*> portOutList;
@@ -49,6 +48,8 @@ public:
     QString Color; /*标题背景色*/
 protected:
     /**节点图形区域大小*/
+    QRectF boundingRect() const override;
+
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

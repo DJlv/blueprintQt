@@ -19,6 +19,7 @@
 #include "Node/BP_BaseNode.h"
 #include "Item/NodeItem/BP_PrintNode.h"
 #include "Port/BP_BasePort.h"
+#include "Item/Node_Port_Style/ItemTest.h"
 #include <QPoint>
 
 /**
@@ -42,7 +43,7 @@ private:
 
 
 signals:
-    void buttonClicked();
+    void buttonClicked(BP_BaseNode *basePort);
 public:
     bool drag_mode = false;
 
@@ -58,7 +59,7 @@ public:
     DraggingEdge* item_drage = nullptr;
     BP_BasePort *nodeportItem;
 private:
-
+    ItemTest *buffer = nullptr;
     bool fledge =true;
     BP_Edge *edge;
     BP_Edge *edgeItem;
@@ -84,6 +85,8 @@ private:
     void creat_dragging_edge(BP_BasePort *item,const QMouseEvent *event);
 
     void update_drage_edge(QMouseEvent *event);
+
+    void childrenSimulation(BP_Edge *itemEdge,QList<BP_BaseNode*> NodeListsItems) const;
 };
 
 

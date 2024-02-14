@@ -20,9 +20,14 @@ public:
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
-
+    void Simulation();
     /**节点图形区域大小*/
     QRectF boundingRect() const override;
+public slots:
+    void slotLineEdit(QString text);
+public:
+    QString itemssd = "";
+
 };
 
 

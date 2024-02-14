@@ -5,49 +5,69 @@
 #include <QPushButton>
 #include <QCoreApplication>
 #include <QLabel>
-#include <QVBoxLayout>
 #include "Item/Node_Port_Style/ItemTest.h"
 #include "Variable/BP_Variable.h"
-#include "Item/NodeItem/BP_PrintNode.h"
+#include "Item/PortItem/BP_TextPin.h"
 
 ItemTest::ItemTest(QWidget *parent) {
-
+    QVBoxLayout* groupBoxLayout = qobject_cast<QVBoxLayout*>(BP_Variable::qGroupBox->layout());
+    if (groupBoxLayout != nullptr) {
+        clearLayout(groupBoxLayout);
+    }
+    layout =  new QVBoxLayout();
+    BP_Variable::qGroupBox->setLayout(layout);
 }
 
-void ItemTest::handleButtonClicked() {
+void ItemTest::handleButtonClicked(BP_BaseNode *baseNode) {
+    qDebug() << "BP_BaseNode使用::地址--》:" << &baseNode;
     lineEdit = new QLineEdit();
     lineEdit->setPlaceholderText("请输入文本"); // 设置占位符文本;
-//    lineEdit->setText("12333333");
-    connect(lineEdit, SIGNAL(editingFinished()), this,  SLOT(buttonClicked()));
-//    connect(lineEdit, SIGNAL(editingFinished()), x,  SLOT(slotLineEdit(QString)));
-//    qDebug() << "init--------x::::"<< lineEdit->text();
-
-
-    QLabel* label = new QLabel("Label Text", BP_Variable::qGroupBox); // 将标签添加到 QGroupBox
+    connect(lineEdit, SIGNAL(editingFinished()), this, SLOT(buttonClicked()));
+    QLabel *label = new QLabel("Label Text", BP_Variable::qGroupBox); // 将标签添加到 QGroupBox
     label->setFixedSize(200, 30);
-    QLabel* label1 = new QLabel("Label Text1", BP_Variable::qGroupBox); // 将标签添加到 QGroupBox
+    QLabel *label1 = new QLabel("Label Text1", BP_Variable::qGroupBox); // 将标签添加到 QGroupBox
     label1->setFixedSize(200, 30);
     button = new QPushButton("打印x", BP_Variable::qGroupBox); // 将按钮添加到 QGroupBox
     button->setFixedSize(100, 30);
-    connect(button,  &QPushButton::clicked, this,  &ItemTest::buttonClicked);
-
-    QVBoxLayout* layout = new QVBoxLayout(BP_Variable::qGroupBox); // 使用垂直布局管理器
+    connect(button, &QPushButton::clicked, this, &ItemTest::buttonClicked);
 
     layout->addWidget(lineEdit);
     layout->addWidget(button);
     layout->addWidget(label1);
     layout->addWidget(label);
     layout->addStretch();
-    BP_PrintNode* x = new BP_PrintNode;
-
-    connect(this,SIGNAL(pushStyle(QString)),x, SLOT(slotLineEdit(QString)));
+    for (BP_BasePort *itemPort: baseNode->portInList)
+    {
+        if (itemPort->port_type == PinType::port_type_in || itemPort->port_type == PinType::port_type_out ) {
+            baseNode->portInList.removeAll(itemPort);
+        }
+    }
+    if(baseNode->portInList.size() > 0) {
+        connect(this, SIGNAL(pushStyle(QString)), baseNode->portInList[0], SLOT(slotLineEdit(QString)));
+    }
 }
 
 void ItemTest::buttonClicked() {
-
-//    qDebug() << "lineEdit->text()--------" <<lineEdit->text();
     emit(pushStyle(lineEdit->text()));
+    update();
 }
 
 
+void ItemTest::clearLayout(QLayout* layout) {
+    QLayoutItem* item;
+    while ((item = layout->takeAt(0)) != nullptr) {
+        if (item->widget() != nullptr) {
+            delete item->widget();
+        }
+        if (item->layout() != nullptr) {
+            clearLayout(item->layout());
+        }
+        delete item;
+    }
+}
 
+ItemTest& ItemTest::operator=(const ItemTest *po) {
+    delete po;
+    ItemTest* item = new ItemTest;
+    return *this;
+}

@@ -19,8 +19,6 @@ BP_BasePort::BP_BasePort(QGraphicsItem *parent) {
 
 BP_BasePort::BP_BasePort(PinType type, QGraphicsItem *parent) : QGraphicsItem(parent), port_type(type) {
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-
-//    update();
 }
 
 void BP_BasePort::add_to_parent_node(BP_BaseNode *nodeItem) {
@@ -30,3 +28,5 @@ void BP_BasePort::add_to_parent_node(BP_BaseNode *nodeItem) {
 void BP_BasePort::Simulation() {
     qDebug() << "print";
 }
+
+

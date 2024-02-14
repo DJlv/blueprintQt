@@ -29,9 +29,21 @@
    </item>
    <item row="1" column="0">
     <widget class="QTextEdit" name="textEdit">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>350</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
+       <height>350</height>
+      </size>
+     </property>
+     <property name="sizeIncrement">
+      <size>
+       <width>0</width>
        <height>350</height>
       </size>
      </property>
@@ -68,12 +80,6 @@
    <class>BP_GridBackgroundView</class>
    <extends>QGraphicsView</extends>
    <header location="global">View/BP_GridBackgroundView.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QGroupBox</class>
-   <extends>QGroupBox</extends>
-   <header location="global">QGroupBox</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

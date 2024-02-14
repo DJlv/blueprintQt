@@ -118,8 +118,12 @@ QVariant BP_BaseNode::itemChange(GraphicsItemChange change, const QVariant &valu
     return QGraphicsItem::itemChange(change, value);
 }
 
-void BP_BaseNode::SimulationStyle() {
 
+
+QRectF BP_BaseNode::boundingRect() const {
+    return QRectF(0, 0, 200, BP_BaseNode::portInList.size() * BP_BaseNode::height >
+                             BP_BaseNode::portOutList.size() * BP_BaseNode::height ?
+                             BP_BaseNode::portInList.size() * BP_BaseNode::height : BP_BaseNode::portOutList.size() *
+                                                                                    BP_BaseNode::height); // 定义节点的边界矩形
 }
-
 

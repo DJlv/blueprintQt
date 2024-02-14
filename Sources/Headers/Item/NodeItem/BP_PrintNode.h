@@ -22,24 +22,12 @@ public:
 
 protected:
     /**节点图形区域大小*/
-    QRectF boundingRect() const override;
-
     void Simulation();
     void SimulationStyle();
-
-    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-
 private:
     QString x =0;
     QPushButton* button= nullptr;
     QLineEdit *lineEdit = nullptr;
-
-signals:
-    void signalButton();
-
-public slots:
-    void slotButton();
-    void slotLineEdit(QString text);
 };
 
 

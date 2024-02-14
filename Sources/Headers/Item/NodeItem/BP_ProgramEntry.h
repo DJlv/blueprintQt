@@ -13,9 +13,6 @@ class BP_ProgramEntry : public BP_BaseNode {
 public:
     explicit BP_ProgramEntry(QGraphicsItem* parent = nullptr);
 protected:
-    /**节点图形区域大小*/
-    QRectF boundingRect() const override;
-
     void Simulation();
 };
 
