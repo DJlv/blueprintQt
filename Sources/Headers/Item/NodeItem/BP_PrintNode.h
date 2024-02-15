@@ -23,9 +23,9 @@ public:
 protected:
     /**节点图形区域大小*/
     void Simulation();
-    void SimulationStyle();
 private:
-    QString x =0;
+    QString itemNode = "";
+    QString x = 0;
     QPushButton* button= nullptr;
     QLineEdit *lineEdit = nullptr;
 };

@@ -113,17 +113,7 @@ void BP_GridBackgroundView::mousePressEvent(QMouseEvent *event) {
 
     if (event->button() == Qt::LeftButton && blueprintNode) {
 
-        qDebug() << "blueprintNode::地址--》:" << static_cast<void *>(blueprintNode);
-        if(buffer) {
-            delete buffer;
-            buffer = new ItemTest;
-        } else {
-            buffer = new ItemTest;
-        }
-        QObject::connect(this, SIGNAL(buttonClicked(BP_BaseNode * )), buffer,
-                         SLOT(handleButtonClicked(BP_BaseNode * )));
-        emit(buttonClicked(blueprintNode));
-        item->setSelected(false);
+
 //        for (BP_BaseNode *item: BP_Variable::NodeLists) {
 //            qDebug() << "blueprintNode::地址--》:" << static_cast<void *>(item);
 //        }
@@ -255,18 +245,31 @@ void BP_GridBackgroundView::dealmouseRight(QMouseEvent *event) {
     QGraphicsItem *item = itemAt(event->pos());
     // 尝试将图形项转换为蓝图节点类
     BP_BaseNode *blueprintNode = dynamic_cast<BP_BaseNode *>(item);
+    BP_BasePort *nodeport = dynamic_cast<BP_BasePort *>(item);
 
-    viewRightButton(event, blueprintNode); // 右键点击空白区域
-    nodeRightButton(event, blueprintNode); // 右键点击节点
+    viewRightButton(event, blueprintNode,nodeport); // 右键点击空白区域
+    nodeRightButton(event, blueprintNode,nodeport); // 右键点击节点
+    portRightButton(event, nodeport); // 右键点击节点
+
     update();
 
     QGraphicsView::mousePressEvent(event);
 }
+void BP_GridBackgroundView::portRightButton(QMouseEvent *event,BP_BasePort *nodeport) {
+    QGraphicsItem *item = itemAt(event->pos());
+    if (event->button() == Qt::RightButton && nodeport) {
+        buffer = new ItemTest;
+        connect(this, SIGNAL(buttonClicked(BP_BasePort *)), buffer,
+                         SLOT(handleButtonClicked(BP_BasePort *)));
+        emit(buttonClicked(nodeport));
+        item->setSelected(false);
+    }
 
+}
 
-void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode) const {
+void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,BP_BasePort *nodeport) const {
 
-    if (event->button() == Qt::RightButton && !blueprintNode) {
+    if (event->button() == Qt::RightButton && !blueprintNode && !nodeport) {
 
         QMenu menu;
         menu.setStyleSheet("QMenu { background-color: #696969;border-radius: 10px; }");
@@ -307,9 +310,9 @@ void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_B
     }
 }
 
-void BP_GridBackgroundView::nodeRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode) {
+void BP_GridBackgroundView::nodeRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,BP_BasePort *nodeport) {
 
-    if (event->button() == Qt::RightButton && blueprintNode && blueprintNode->Title != "Run") {
+    if (event->button() == Qt::RightButton && blueprintNode && blueprintNode->Title != "Run" && !nodeport) {
 
         QMenu menu;
         menu.setStyleSheet("QMenu { background-color: #696969;border-radius: 10px; }");

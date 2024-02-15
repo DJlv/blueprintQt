@@ -10,16 +10,16 @@
 #include "Item/PortItem/BP_TextPin.h"
 
 ItemTest::ItemTest(QWidget *parent) {
-    QVBoxLayout* groupBoxLayout = qobject_cast<QVBoxLayout*>(BP_Variable::qGroupBox->layout());
+    QVBoxLayout *groupBoxLayout = qobject_cast<QVBoxLayout *>(BP_Variable::qGroupBox->layout());
     if (groupBoxLayout != nullptr) {
         clearLayout(groupBoxLayout);
     }
-    layout =  new QVBoxLayout();
+    layout = new QVBoxLayout();
     BP_Variable::qGroupBox->setLayout(layout);
 }
 
-void ItemTest::handleButtonClicked(BP_BaseNode *baseNode) {
-    qDebug() << "BP_BaseNode使用::地址--》:" << &baseNode;
+void ItemTest::handleButtonClicked(BP_BasePort *nodeport) {
+    nodeportItem = nodeport;
     lineEdit = new QLineEdit();
     lineEdit->setPlaceholderText("请输入文本"); // 设置占位符文本;
     connect(lineEdit, SIGNAL(editingFinished()), this, SLOT(buttonClicked()));
@@ -36,25 +36,20 @@ void ItemTest::handleButtonClicked(BP_BaseNode *baseNode) {
     layout->addWidget(label1);
     layout->addWidget(label);
     layout->addStretch();
-    for (BP_BasePort *itemPort: baseNode->portInList)
-    {
-        if (itemPort->port_type == PinType::port_type_in || itemPort->port_type == PinType::port_type_out ) {
-            baseNode->portInList.removeAll(itemPort);
-        }
-    }
-    if(baseNode->portInList.size() > 0) {
-        connect(this, SIGNAL(pushStyle(QString)), baseNode->portInList[0], SLOT(slotLineEdit(QString)));
-    }
+
+    connect(this, SIGNAL(pushStyle(QString)), nodeportItem, SLOT(slotLineEdit(QString)));
 }
 
 void ItemTest::buttonClicked() {
     emit(pushStyle(lineEdit->text()));
+    disconnect(this, SIGNAL(pushStyle(QString)), nodeportItem, SLOT(slotLineEdit(QString)));
+    nodeportItem = nullptr;
     update();
 }
 
 
-void ItemTest::clearLayout(QLayout* layout) {
-    QLayoutItem* item;
+void ItemTest::clearLayout(QLayout *layout) {
+    QLayoutItem *item;
     while ((item = layout->takeAt(0)) != nullptr) {
         if (item->widget() != nullptr) {
             delete item->widget();
@@ -66,8 +61,8 @@ void ItemTest::clearLayout(QLayout* layout) {
     }
 }
 
-ItemTest& ItemTest::operator=(const ItemTest *po) {
+ItemTest &ItemTest::operator=(const ItemTest *po) {
     delete po;
-    ItemTest* item = new ItemTest;
+    ItemTest *item = new ItemTest;
     return *this;
 }

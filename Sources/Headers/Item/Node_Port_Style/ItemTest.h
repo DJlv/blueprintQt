@@ -19,13 +19,14 @@ public:
     ItemTest& operator=(const ItemTest *po);
 
 public slots:
-    void handleButtonClicked(BP_BaseNode *baseNode);
+    void handleButtonClicked(BP_BasePort *nodeport);
     void buttonClicked();
 
 signals:
     void pushStyle(QString text);
 
 private:
+    BP_BasePort *nodeportItem;
     QVBoxLayout *layout = nullptr;
     QString x =0;
     QPushButton* button= nullptr;

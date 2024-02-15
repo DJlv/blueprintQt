@@ -28,10 +28,5 @@ BP_PrintNode::BP_PrintNode(QGraphicsItem *parent) : BP_BaseNode(parent) {
 
 
 void BP_PrintNode::Simulation() {
-
+    qDebug() << "BP_PrintNode---------开始执行Simulation 函数:" << itemNode;
 }
-
-void BP_PrintNode::SimulationStyle() {
-
-}
-

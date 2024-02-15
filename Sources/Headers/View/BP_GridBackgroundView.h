@@ -32,18 +32,6 @@ class BP_GridBackgroundView : public QGraphicsView {
     Q_OBJECT
 public:
     explicit BP_GridBackgroundView(QWidget *parent = nullptr);
-protected:
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void drawBackground(QPainter *painter, const QRectF &rect);
-    void wheelEvent(QWheelEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *mouseEvent) override;
-private:
-    void dealmouseRight(QMouseEvent *event);  // 点击右键
-
-
-signals:
-    void buttonClicked(BP_BaseNode *basePort);
 public:
     bool drag_mode = false;
 
@@ -66,15 +54,28 @@ private:
     int n = 0; // 左键点击次数
     bool m_bIsPressed = false;//记录鼠标是否按下
     double m_dOriScale;//视图的原始比例
+protected:
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void drawBackground(QPainter *painter, const QRectF &rect);
+    void wheelEvent(QWheelEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *mouseEvent) override;
+private:
+    void dealmouseRight(QMouseEvent *event);  // 点击右键
 
-    void nodeRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode);
+
+signals:
+    void buttonClicked(BP_BasePort *basePort);
+
+private:
+    void nodeRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,BP_BasePort *nodeport);
 
     /**
      * 右键点击不是 蓝图节点 todo 差判断是否引脚 连接线等
      * @param event
      * @param blueprintNode
      */
-    void viewRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode) const;
+    void viewRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,BP_BasePort *nodeport) const;
 
     void addNodeEdge(BP_BaseNode *startNode, BP_BaseNode *endNode, BP_BasePort *source_port, BP_BasePort *des_port);
 
@@ -87,6 +88,8 @@ private:
     void update_drage_edge(QMouseEvent *event);
 
     void childrenSimulation(BP_Edge *itemEdge,QList<BP_BaseNode*> NodeListsItems) const;
+
+    void portRightButton(QMouseEvent *event, BP_BasePort *nodeport);
 };
 
 
