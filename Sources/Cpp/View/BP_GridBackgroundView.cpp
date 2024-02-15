@@ -3,7 +3,7 @@
 //
 
 #include "View/BP_GridBackgroundView.h"
-#include "Item/Node_Port_Style/ItemTest.h"
+#include "Item/AttributeItem/ItemTest.h"
 #include <QMenu>
 #include <QtMath>
 #include <QVector>
@@ -20,11 +20,6 @@ BP_GridBackgroundView::BP_GridBackgroundView(QWidget *parent) : QGraphicsView(pa
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);//隐藏水平条
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);//隐藏竖条
-
-    //以鼠标点击点为中心放缩需要加下面两句
-//    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-//    setResizeAnchor(QGraphicsView::AnchorUnderMouse);
-
     setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
     setSceneRect(0, 0, width, height);
@@ -107,16 +102,6 @@ void BP_GridBackgroundView::mousePressEvent(QMouseEvent *event) {
         startEdgePort->edgeList.removeAll(edgeItem);
         startEdgePort->update();
         endEdgePort->update();
-
-    }
-    BP_BasePort *blueprintPort = dynamic_cast<BP_BasePort *>(item);
-
-    if (event->button() == Qt::LeftButton && blueprintNode) {
-
-
-//        for (BP_BaseNode *item: BP_Variable::NodeLists) {
-//            qDebug() << "blueprintNode::地址--》:" << static_cast<void *>(item);
-//        }
     }
     if (event->button() == Qt::LeftButton && nodeport) {
         n++;
@@ -142,29 +127,39 @@ void BP_GridBackgroundView::creat_dragging_edge(BP_BasePort *item, const QMouseE
 
     QPointF *source = new QPointF(item->scenePos());
     if (item_drage) {
-        QPoint port_source_pos = mapFromScene(QPoint(item_drage->source_pos->x(), item_drage->source_pos->y()));
-        QPoint port_dos_pos = mapFromScene(QPoint(item_drage->des_pos->x(), item_drage->des_pos->y()));
+        if (item->port_type == PinType::port_type_in || item->port_type == PinType::port_type_out) {
 
-        QGraphicsItem *port_source_pos_item = itemAt(port_source_pos);
-        QGraphicsItem *port_dos_pos_item = itemAt(port_dos_pos);
+            QPoint port_source_pos = mapFromScene(QPoint(item_drage->source_pos->x(), item_drage->source_pos->y()));
+            QPoint port_dos_pos = mapFromScene(QPoint(item_drage->des_pos->x(), item_drage->des_pos->y()));
 
-        BP_BasePort *nodeport2 = dynamic_cast<BP_BasePort *>(port_dos_pos_item);
-        BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(port_source_pos_item);
-        if (!nodeport2) {
-            nodeport2 = nodeportItem;
-        }
-        if (!nodeport1) {
-            nodeport1 = nodeportItem;
-        }
-        if (nodeport1 && nodeport2) {
-            addNodeEdge(nodeport1->node, nodeport2->node, nodeport1, nodeport2);
+            QGraphicsItem *port_source_pos_item = itemAt(port_source_pos);
+            QGraphicsItem *port_dos_pos_item = itemAt(port_dos_pos);
+
+            BP_BasePort *nodeport2 = dynamic_cast<BP_BasePort *>(port_dos_pos_item);
+            BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(port_source_pos_item);
+            if (!nodeport2) {
+                nodeport2 = nodeportItem;
+            }
+            if (!nodeport1) {
+                nodeport1 = nodeportItem;
+            }
+            if (nodeport1 && nodeport2) {
+                if (nodeport1->port_type == PinType::port_type_in || nodeport1->port_type == PinType::port_type_out) {
+                    if ((nodeport2->port_type == PinType::port_type_in ||
+                         nodeport2->port_type == PinType::port_type_out)) {
+                        addNodeEdge(nodeport1->node, nodeport2->node, nodeport1, nodeport2);
+                    }
+                }
+            }
         }
     }
     if (!item_drage) {
-        QGraphicsItem *item = itemAt(event->pos());
-        BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(item);
-        item_drage = new DraggingEdge(source, source);
-        nodeportItem = nodeport1;
+        if (item->port_type == PinType::port_type_in || item->port_type == PinType::port_type_out) {
+            QGraphicsItem *item = itemAt(event->pos());
+            BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(item);
+            item_drage = new DraggingEdge(source, source);
+            nodeportItem = nodeport1;
+        }
     }
 
     if (item->port_type == PinType::port_type_port_in || item->port_type == PinType::port_type_in) {
@@ -247,27 +242,28 @@ void BP_GridBackgroundView::dealmouseRight(QMouseEvent *event) {
     BP_BaseNode *blueprintNode = dynamic_cast<BP_BaseNode *>(item);
     BP_BasePort *nodeport = dynamic_cast<BP_BasePort *>(item);
 
-    viewRightButton(event, blueprintNode,nodeport); // 右键点击空白区域
-    nodeRightButton(event, blueprintNode,nodeport); // 右键点击节点
+    viewRightButton(event, blueprintNode, nodeport); // 右键点击空白区域
+    nodeRightButton(event, blueprintNode, nodeport); // 右键点击节点
     portRightButton(event, nodeport); // 右键点击节点
 
     update();
 
     QGraphicsView::mousePressEvent(event);
 }
-void BP_GridBackgroundView::portRightButton(QMouseEvent *event,BP_BasePort *nodeport) {
+
+void BP_GridBackgroundView::portRightButton(QMouseEvent *event, BP_BasePort *nodeport) {
     QGraphicsItem *item = itemAt(event->pos());
     if (event->button() == Qt::RightButton && nodeport) {
-        buffer = new ItemTest;
-        connect(this, SIGNAL(buttonClicked(BP_BasePort *)), buffer,
-                         SLOT(handleButtonClicked(BP_BasePort *)));
+        connect(this, SIGNAL(buttonClicked(BP_BasePort * )), nodeport->attribute,
+                SLOT(handleButtonClicked(BP_BasePort * )));
         emit(buttonClicked(nodeport));
         item->setSelected(false);
     }
 
 }
 
-void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,BP_BasePort *nodeport) const {
+void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,
+                                            BP_BasePort *nodeport) const {
 
     if (event->button() == Qt::RightButton && !blueprintNode && !nodeport) {
 
@@ -310,7 +306,8 @@ void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_B
     }
 }
 
-void BP_GridBackgroundView::nodeRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,BP_BasePort *nodeport) {
+void BP_GridBackgroundView::nodeRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,
+                                            BP_BasePort *nodeport) {
 
     if (event->button() == Qt::RightButton && blueprintNode && blueprintNode->Title != "Run" && !nodeport) {
 
@@ -336,14 +333,6 @@ void BP_GridBackgroundView::nodeRightButton(const QMouseEvent *event, const BP_B
         QAction *print = menu.addAction("Run");
         QAction *selectedAction = menu.exec(event->globalPos());
         QList<BP_BaseNode *> NodeListsItems = BP_Variable::NodeLists;
-
-        for (BP_BaseNode *item: BP_Variable::NodeLists) {
-            qDebug() << "BP_BaseNode::地址-------------》:" << static_cast<void *>(item);
-            for (BP_BasePort *itemPort: item->portInList) {
-                qDebug() << "BP_BasePort::地址--》:" << static_cast<void *>(itemPort);
-            }
-        }
-
         if (selectedAction == print) {
             if (blueprintNode->Title == "Run") {
                 for (BP_BaseNode *item: NodeListsItems) {

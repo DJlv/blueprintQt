@@ -4,7 +4,9 @@
 
 #include <QPushButton>
 #include <QCoreApplication>
+#include <QDateTime>
 #include "Item/PortItem/BP_TextPin.h"
+#include "Variable/BP_Variable.h"
 
 BP_TextPin::BP_TextPin(QGraphicsItem *parent) : BP_BasePort(parent) {
 }
@@ -14,9 +16,10 @@ QRectF BP_TextPin::boundingRect() const {
 }
 
 BP_TextPin::BP_TextPin(PinType type, QGraphicsItem *parent) : BP_BasePort(type, parent) {
-    BP_BasePort::Title ="text";
+    BP_BasePort::Title ="打印日志";
     BP_BasePort::Color = "#fbf123";
     BP_BasePort::port_type = type;
+    BP_BasePort::attribute = new ItemTest;
 }
 
 void BP_TextPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -30,12 +33,16 @@ void BP_TextPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         if (edgeList.size() > 0) {
             painter->setPen(pen_default);
             painter->setBrush(QColor(Color));  // 设置填充颜色或样式
-            QRect rect(0, 0, 15, 15); // 圆形的外接矩形
-            path.addEllipse(rect);
+//            QRect rect(0, 0, 40, 20); // 圆形的外接矩形
+            QRectF rect(0, 0, 60, 15);
+            path.addRect(rect);
             painter->drawPath(path);
+
         } else {
-            QRect rect(0, 0, 15, 15); // 圆形的外接矩形
-            path.addEllipse(rect);
+            QRectF rect(0, 0, 60, 15);
+
+//            QRect rect(0, 0, 40, 20); // 圆形的外接矩形
+            path.addRect(rect);
             painter->drawPath(path);
         }
         QPainterPath pathss;
@@ -49,8 +56,8 @@ void BP_TextPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
         path.addPath(pathss);
         QPainterPath pathText;
         if (port_type == PinType::port_type_port_in) {
-            pathText.addText(Title.size() + 10 + 15, 12,font, Title);
-            painter->drawText(Title.size() + 10 + 15, 12,Title);
+            pathText.addText(Title.size() + 60, 12,font, Title);
+            painter->drawText(Title.size() + 60, 12,Title);
         } else if (port_type == PinType::port_type_port_out) {
             pathText.addText(-Title.size() * 9, 12,font, Title);
             painter->drawText(-Title.size() * 9, 12,Title);
@@ -78,10 +85,13 @@ void BP_TextPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 }
 
 void BP_TextPin::Simulation() {
-    qDebug() << "开始执行Simulation 函数" << itemssd;
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    QString formattedDateTime = currentDateTime.toString("yyyyMMdd hh:mm:ss");
+    QString str = BP_Variable::console->toPlainText()+formattedDateTime + "------打印日志:" + itemssd+"\n";
+    BP_Variable::console->setPlainText(str);
+    update();
 }
 
 void BP_TextPin::slotLineEdit(QString text) {
-//    qDebug() << "点击按钮修改节点数据:" << text;
     itemssd = text;
 }

@@ -6,7 +6,7 @@
 #include "mainwindow.h"
 #include "Forms/ui_MainWindow.h"
 #include "Scence/BP_GridGroupScence.h"
-#include "Item/Node_Port_Style/ItemTest.h"
+#include "Item/AttributeItem/ItemTest.h"
 #include <QGraphicsSimpleTextItem>
 #include <QLabel>
 #include <QRadioButton>
@@ -27,10 +27,10 @@ MainWindow::~MainWindow() {
 
 void MainWindow::init() {
     BP_Variable::qGroupBox = ui->groupBox;
+    BP_Variable::textEdit = ui->textEdit;
+    BP_Variable::console =  ui->console;
     scene = new BP_GridGroupScence();
     ui->graphicsView->setScene(scene);
-    QString st="添加一行";
-    ui->textEdit->insertPlainText(st +='\n');
     update();
 }
 

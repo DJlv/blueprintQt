@@ -6,12 +6,9 @@
 
 BP_Edge::BP_Edge(QGraphicsItem *parent): QGraphicsItem(parent){
 }
-
-
 void BP_Edge::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsItem::mousePressEvent(event);
 }
-
 void BP_Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     painter->setRenderHint(QPainter::Antialiasing, true);
     update_edge_path();
@@ -26,21 +23,18 @@ void BP_Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
         shadow->setColor("#00000000");
         setGraphicsEffect(shadow);
     }
-
     update();
 }
-
 
 void BP_Edge::update_edge_path(){
     QPainterPath path = QPainterPath();
     long xwidth = abs(source_port->scenePos().x()-des_port->scenePos().x());
     long yheight = abs(source_port->scenePos().y()-des_port->scenePos().y());
-
     float tangent = float(yheight) / xwidth * 0.5;
     if(tangent >= 1) tangent =1;
     tangent *= xwidth;
-    path.moveTo(source_port->scenePos().x() + 15 + 5,source_port->scenePos().y() + 7);
-    path.cubicTo(QPointF(source_port->scenePos().x() + 7 + tangent,source_port->scenePos().y() + 7),QPointF(des_port->scenePos().x()-tangent + 7,des_port->scenePos().y() + 7),QPointF(des_port->scenePos().x(),des_port->scenePos().y() + 7));
+    path.moveTo(source_port->scenePos().x() + 15 + 15,source_port->scenePos().y() + 15);
+    path.cubicTo(QPointF(source_port->scenePos().x() +30 + tangent,source_port->scenePos().y() + 15),QPointF(des_port->scenePos().x()-tangent + 7,des_port->scenePos().y()  + 15),QPointF(des_port->scenePos().x(),des_port->scenePos().y() + 15));
     this->paths = path;
 }
 

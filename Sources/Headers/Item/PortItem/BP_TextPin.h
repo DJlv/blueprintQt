@@ -8,6 +8,7 @@
 
 #include <QGraphicsItem>
 #include "Port/BP_BasePort.h"
+#include "Item/AttributeItem/ItemTest.h"
 #include <QtWidgets/QGroupBox>
 
 class BP_TextPin : public BP_BasePort {
@@ -27,7 +28,6 @@ public slots:
     void slotLineEdit(QString text);
 public:
     QString itemssd = "";
-
 };
 
 

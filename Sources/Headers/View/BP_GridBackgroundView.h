@@ -19,7 +19,7 @@
 #include "Node/BP_BaseNode.h"
 #include "Item/NodeItem/BP_PrintNode.h"
 #include "Port/BP_BasePort.h"
-#include "Item/Node_Port_Style/ItemTest.h"
+#include "Item/AttributeItem/ItemTest.h"
 #include <QPoint>
 
 /**
@@ -47,7 +47,6 @@ public:
     DraggingEdge* item_drage = nullptr;
     BP_BasePort *nodeportItem;
 private:
-    ItemTest *buffer = nullptr;
     bool fledge =true;
     BP_Edge *edge;
     BP_Edge *edgeItem;

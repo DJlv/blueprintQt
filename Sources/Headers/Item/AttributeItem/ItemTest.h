@@ -8,30 +8,34 @@
 #include <QGroupBox>
 #include <QLineEdit>
 #include <QVBoxLayout>
+#include <QLabel>
 
 #include "Port/BP_BasePort.h"
+#include "Attribute/BP_Attribute.h"
 
-class ItemTest:  public QWidget {
+class ItemTest:  public BP_Attribute {
     Q_OBJECT
 public:
     explicit ItemTest(QWidget *parent = nullptr);
-    void clearLayout(QLayout *layout);
-    ItemTest& operator=(const ItemTest *po);
 
+/**
+ * 信号
+ */
+signals:
+    void pushStyle(QString text);
+/**
+ * 槽
+ */
 public slots:
     void handleButtonClicked(BP_BasePort *nodeport);
     void buttonClicked();
-
-signals:
-    void pushStyle(QString text);
-
 private:
     BP_BasePort *nodeportItem;
-    QVBoxLayout *layout = nullptr;
-    QString x =0;
-    QPushButton* button= nullptr;
+    QLabel *label = nullptr;
     QLineEdit *lineEdit = nullptr;
 
+    QString orglinight = "";
+    void endLayout();
 };
 
 
