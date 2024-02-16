@@ -3,7 +3,9 @@
 //
 
 #include "View/BP_GridBackgroundView.h"
-#include "Item/AttributeItem/ItemTest.h"
+#include "Item/AttributeItem/BP_ItemTest.h"
+#include "Item/NodeItem/BP_RunNpm.h"
+#include "Item/PortItem/BP_TextPin.h"
 #include <QMenu>
 #include <QtMath>
 #include <QVector>
@@ -87,7 +89,6 @@ void BP_GridBackgroundView::mousePressEvent(QMouseEvent *event) {
     // 获取鼠标点击位置的图形项
     QGraphicsItem *item = itemAt(event->pos());
     // 尝试将图形项转换为蓝图节点类
-    BP_BaseNode *blueprintNode = dynamic_cast<BP_BaseNode *>(item);
     BP_BasePort *nodeport = dynamic_cast<BP_BasePort *>(item);
     BP_Edge *edge = dynamic_cast<BP_Edge *>(item);
 
@@ -127,39 +128,29 @@ void BP_GridBackgroundView::creat_dragging_edge(BP_BasePort *item, const QMouseE
 
     QPointF *source = new QPointF(item->scenePos());
     if (item_drage) {
-        if (item->port_type == PinType::port_type_in || item->port_type == PinType::port_type_out) {
+        QPoint port_source_pos = mapFromScene(QPoint(item_drage->source_pos->x(), item_drage->source_pos->y()));
+        QPoint port_dos_pos = mapFromScene(QPoint(item_drage->des_pos->x(), item_drage->des_pos->y()));
 
-            QPoint port_source_pos = mapFromScene(QPoint(item_drage->source_pos->x(), item_drage->source_pos->y()));
-            QPoint port_dos_pos = mapFromScene(QPoint(item_drage->des_pos->x(), item_drage->des_pos->y()));
+        QGraphicsItem *port_source_pos_item = itemAt(port_source_pos);
+        QGraphicsItem *port_dos_pos_item = itemAt(port_dos_pos);
 
-            QGraphicsItem *port_source_pos_item = itemAt(port_source_pos);
-            QGraphicsItem *port_dos_pos_item = itemAt(port_dos_pos);
-
-            BP_BasePort *nodeport2 = dynamic_cast<BP_BasePort *>(port_dos_pos_item);
-            BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(port_source_pos_item);
-            if (!nodeport2) {
-                nodeport2 = nodeportItem;
-            }
-            if (!nodeport1) {
-                nodeport1 = nodeportItem;
-            }
-            if (nodeport1 && nodeport2) {
-                if (nodeport1->port_type == PinType::port_type_in || nodeport1->port_type == PinType::port_type_out) {
-                    if ((nodeport2->port_type == PinType::port_type_in ||
-                         nodeport2->port_type == PinType::port_type_out)) {
-                        addNodeEdge(nodeport1->node, nodeport2->node, nodeport1, nodeport2);
-                    }
-                }
-            }
+        BP_BasePort *nodeport2 = dynamic_cast<BP_BasePort *>(port_dos_pos_item);
+        BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(port_source_pos_item);
+        if (!nodeport2) {
+            nodeport2 = nodeportItem;
+        }
+        if (!nodeport1) {
+            nodeport1 = nodeportItem;
+        }
+        if (nodeport1 && nodeport2) {
+            addNodeEdge(nodeport1->node, nodeport2->node, nodeport1, nodeport2);
         }
     }
     if (!item_drage) {
-        if (item->port_type == PinType::port_type_in || item->port_type == PinType::port_type_out) {
-            QGraphicsItem *item = itemAt(event->pos());
-            BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(item);
-            item_drage = new DraggingEdge(source, source);
-            nodeportItem = nodeport1;
-        }
+        QGraphicsItem *item = itemAt(event->pos());
+        BP_BasePort *nodeport1 = dynamic_cast<BP_BasePort *>(item);
+        item_drage = new DraggingEdge(source, source,nodeport1,nodeport1);
+        nodeportItem = nodeport1;
     }
 
     if (item->port_type == PinType::port_type_port_in || item->port_type == PinType::port_type_in) {
@@ -262,16 +253,16 @@ void BP_GridBackgroundView::portRightButton(QMouseEvent *event, BP_BasePort *nod
 
 }
 
-void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,
-                                            BP_BasePort *nodeport) const {
+void BP_GridBackgroundView::viewRightButton(QMouseEvent *event, BP_BaseNode *blueprintNode,
+                                            BP_BasePort *nodeport) {
 
     if (event->button() == Qt::RightButton && !blueprintNode && !nodeport) {
 
         QMenu menu;
         menu.setStyleSheet("QMenu { background-color: #696969;border-radius: 10px; }");
-        QAction *print = menu.addAction("print");
         QAction *run = menu.addAction("run");
-        QAction *text = menu.addAction("text");
+        QAction *print = menu.addAction("print");
+        QAction *runNpm = menu.addAction("runNpm");
         QAction *action4 = menu.addAction("Action 2");
 
         QAction *selectedAction = menu.exec(event->globalPos());
@@ -293,34 +284,32 @@ void BP_GridBackgroundView::viewRightButton(const QMouseEvent *event, const BP_B
                 scene()->addItem(item);
                 BP_Variable::NodeLists.append(item);
             }
-
-        } else if (selectedAction == text) {
-            QGraphicsSimpleTextItem *simpleTextItem = new QGraphicsSimpleTextItem;
-            simpleTextItem->setBrush(Qt::white);
-            simpleTextItem->setText("QGraphicsSimpleTextItem Engine 中文 123");
-            simpleTextItem->setFont(QFont("SimSun", 12));
-            simpleTextItem->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
-            simpleTextItem->setPos(mapToScene(event->pos()).x(), mapToScene(event->pos()).y());
-            scene()->addItem(simpleTextItem);
+        } else if (selectedAction == runNpm) {
+            BP_BaseNode *item = new BP_RunNpm;
+            item->setPos(mapToScene(event->pos()).x(), mapToScene(event->pos()).y());
+            scene()->addItem(item);
+            BP_Variable::NodeLists.append(item);
         }
     }
 }
 
-void BP_GridBackgroundView::nodeRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,
+void BP_GridBackgroundView::nodeRightButton(QMouseEvent *event, BP_BaseNode *blueprintNode,
                                             BP_BasePort *nodeport) {
 
     if (event->button() == Qt::RightButton && blueprintNode && blueprintNode->Title != "Run" && !nodeport) {
 
         QMenu menu;
         menu.setStyleSheet("QMenu { background-color: #696969;border-radius: 10px; }");
-        QAction *print = menu.addAction("color");
+        QAction *print = menu.addAction("添加日志");
         QAction *action2 = menu.addAction("Action 2");
         QAction *action3 = menu.addAction("Action 2");
         QAction *action4 = menu.addAction("Action 2");
 
         QAction *selectedAction = menu.exec(event->globalPos());
         if (selectedAction == print) {
-            qDebug() << "color被点击了";
+            BP_BasePort *printPin = new BP_TextPin(PinType::port_type_port_in, blueprintNode);
+            blueprintNode->portInList.append(printPin);
+
         } else if (selectedAction == action2) {
             // 执行 Action 2 对应的操作
         }

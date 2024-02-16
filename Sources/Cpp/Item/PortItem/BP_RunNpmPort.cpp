@@ -1,23 +1,24 @@
 //
-// Created by admin on 2024/1/6.
+// Created by admin on 2024/2/16.
 //
 
-#include <QPushButton>
-#include <QCoreApplication>
-#include <QDateTime>
-#include "Item/PortItem/BP_TextPin.h"
+#include "Item/PortItem/BP_RunNpmPort.h"
+#include "Item/AttributeItem/BP_RunNpmAttribute.h"
 #include "Variable/BP_Variable.h"
 
-BP_TextPin::BP_TextPin(QGraphicsItem *parent) : BP_BasePort(parent) {
-}
-BP_TextPin::BP_TextPin(PinType type, QGraphicsItem *parent) : BP_BasePort(type, parent) {
-    BP_BasePort::Title ="打印日志";
-    BP_BasePort::Color = "#fbf123";
-    BP_BasePort::port_type = type;
-    BP_BasePort::attribute = new BP_ItemTest;
+BP_RunNpmPort::BP_RunNpmPort(QGraphicsItem *parent) : BP_BasePort(parent) {
+
 }
 
-void BP_TextPin::paintChildren(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+BP_RunNpmPort::BP_RunNpmPort(PinType type, QGraphicsItem *parent) : BP_BasePort(type, parent) {
+    BP_BasePort::Title ="设置NPM参数";
+    BP_BasePort::Color = "#46e407";
+    BP_BasePort::port_type = type;
+    BP_BasePort::attribute = new BP_RunNpmAttribute;
+}
+
+
+void BP_RunNpmPort::paintChildren(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     if(BP_BasePort::port_type == PinType::port_type_port_out || BP_BasePort::port_type == PinType::port_type_port_in) {
         QFont font("SimSun", 12);  // 创建字体对象并指定字体名称和大小
         painter->setFont(font);
@@ -51,14 +52,13 @@ void BP_TextPin::paintChildren(QPainter *painter, const QStyleOptionGraphicsItem
     }
 }
 
-void BP_TextPin::Simulation() {
-    QDateTime currentDateTime = QDateTime::currentDateTime();
-    QString formattedDateTime = currentDateTime.toString("yyyyMMdd hh:mm:ss");
-    QString str = BP_Variable::console->toPlainText()+formattedDateTime + "------:" + itemssd+"\n";
-    BP_Variable::console->setPlainText(str);
-    update();
+void BP_RunNpmPort::Simulation() {
+    if(!item) {
+        BP_Variable::getPlintConsole("请启动浏览器程序,之后才可查看");
+    } else{
+        BP_Variable::getPlintConsole("浏览器程序已启动,查看地址:http://localhost:8080/#/");
+    }
 }
-
-void BP_TextPin::slotLineEdit(QString text) {
-    itemssd = text;
+void BP_RunNpmPort::slotLineEdit(bool text) {
+    item = text;
 }

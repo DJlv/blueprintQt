@@ -9,8 +9,10 @@
 #include "Item/NodeItem/BP_PrintNode.h"
 #include <QList>
 #include <QString>
+#include <QFile>
 #include <QGroupBox>
 #include <QTextEdit>
+#include <QDateTime>
 #include "Edge/BP_Edge.h"
 
 namespace BP_Variable {
@@ -19,7 +21,12 @@ namespace BP_Variable {
     extern QGroupBox* qGroupBox;
     extern QTextEdit* textEdit;
     extern QTextEdit* console;
+    extern QString pathAll;
+
+    void getItemFile();
     void AddNodeToList();
+
+    void getPlintConsole(const QString str);
 };
 
 

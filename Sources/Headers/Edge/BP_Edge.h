@@ -43,7 +43,6 @@ public:
     BP_BaseNode *scence;
     QColor edge_color;
     QPen pen_default;
-    QPainterPath paths;
 
     QColor shadow_color;
     QGraphicsDropShadowEffect *shadow;
@@ -51,6 +50,8 @@ public:
      * 计算连接线路径
      */
     void update_edge_path();
+
+    QPainterPath getPath() const;
 };
 
 

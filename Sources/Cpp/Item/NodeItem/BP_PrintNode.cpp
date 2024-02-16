@@ -4,11 +4,8 @@
 
 #include "Item/NodeItem/BP_PrintNode.h"
 #include "Item/PortItem/BP_TextPin.h"
-#include <QPushButton>
-#include <QCoreApplication>
-#include <QLabel>
 #include <QVBoxLayout>
-#include <QLineEdit>
+
 
 BP_PrintNode::BP_PrintNode(QGraphicsItem *parent) : BP_BaseNode(parent) {
     BP_BaseNode::Title = "print";
@@ -23,7 +20,3 @@ BP_PrintNode::BP_PrintNode(QGraphicsItem *parent) : BP_BaseNode(parent) {
     };
 }
 
-
-void BP_PrintNode::Simulation() {
-    qDebug() << "BP_PrintNode---------开始执行Simulation 函数:" << itemNode;
-}

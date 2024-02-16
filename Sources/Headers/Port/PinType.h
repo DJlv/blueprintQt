@@ -6,6 +6,7 @@
 #define TEST_PINTYPE_H
 
 enum PinType {
+    port_type_item = 1000,
     port_type_in = 1001,
     port_type_out = 1002,
     port_type_port_in = 1003,

@@ -19,7 +19,7 @@
 #include "Node/BP_BaseNode.h"
 #include "Item/NodeItem/BP_PrintNode.h"
 #include "Port/BP_BasePort.h"
-#include "Item/AttributeItem/ItemTest.h"
+#include "Item/AttributeItem/BP_ItemTest.h"
 #include <QPoint>
 
 /**
@@ -67,14 +67,14 @@ signals:
     void buttonClicked(BP_BasePort *basePort);
 
 private:
-    void nodeRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,BP_BasePort *nodeport);
+    void nodeRightButton(QMouseEvent *event,BP_BaseNode *blueprintNode,BP_BasePort *nodeport);
 
     /**
      * 右键点击不是 蓝图节点 todo 差判断是否引脚 连接线等
      * @param event
      * @param blueprintNode
      */
-    void viewRightButton(const QMouseEvent *event, const BP_BaseNode *blueprintNode,BP_BasePort *nodeport) const;
+    void viewRightButton(QMouseEvent *event, BP_BaseNode *blueprintNode,BP_BasePort *nodeport);
 
     void addNodeEdge(BP_BaseNode *startNode, BP_BaseNode *endNode, BP_BasePort *source_port, BP_BasePort *des_port);
 

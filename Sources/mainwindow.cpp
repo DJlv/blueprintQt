@@ -6,7 +6,7 @@
 #include "mainwindow.h"
 #include "Forms/ui_MainWindow.h"
 #include "Scence/BP_GridGroupScence.h"
-#include "Item/AttributeItem/ItemTest.h"
+#include "Item/AttributeItem/BP_ItemTest.h"
 #include <QGraphicsSimpleTextItem>
 #include <QLabel>
 #include <QRadioButton>

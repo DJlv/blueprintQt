@@ -23,6 +23,7 @@ void BP_Attribute::clearLayout(QLayout *layout) {
         }
         delete item;
     }
+
 }
 
 void BP_Attribute::endLayout() {

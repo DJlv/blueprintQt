@@ -42,7 +42,8 @@ public:
 
     QList<BP_Edge*> edgeList;
 
-    int  height = 30;
+    int height = 30;
+    int width = 0;
 public:
     QString Title; /**标题*/
     QString Color; /*标题背景色*/

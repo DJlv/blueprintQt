@@ -24,12 +24,18 @@ class BP_BasePort :public QObject,public QGraphicsItem {
     Q_OBJECT
 public:
     explicit BP_BasePort(QGraphicsItem *parent = nullptr);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+    QRectF boundingRect() const override;
 
 public:
     explicit BP_BasePort(PinType type, QGraphicsItem *parent = nullptr);
     void add_Edge(BP_Edge* edgeItem);
     void add_to_parent_node(BP_BaseNode* nodeItem);
+    void InOutStyle(QPainter *painter);
     virtual void Simulation();
+
+    virtual void paintChildren(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 public:
     int n = 0;
     QPainterPath path;
@@ -38,7 +44,7 @@ public:
     QString InTiTle;
     QString OutTitle;
 
-    int port_type;
+    PinType port_type;
     bool flage = false;
     QList<BP_Edge*> edgeList;
     BP_BaseNode* node;

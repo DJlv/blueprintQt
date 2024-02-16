@@ -5,6 +5,7 @@
 #include<iostream>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+
 using namespace std;
 int main (int argc, char *argv[])
 {

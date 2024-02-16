@@ -8,7 +8,7 @@
 
 #include <QGraphicsItem>
 #include "Port/BP_BasePort.h"
-#include "Item/AttributeItem/ItemTest.h"
+#include "Item/AttributeItem/BP_ItemTest.h"
 #include <QtWidgets/QGroupBox>
 
 class BP_TextPin : public BP_BasePort {
@@ -16,14 +16,11 @@ Q_OBJECT
 
 public:
     explicit BP_TextPin(QGraphicsItem *parent = nullptr);
-
     explicit BP_TextPin(PinType type, QGraphicsItem *parent = nullptr);
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+    void paintChildren(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
     void Simulation();
-    /**节点图形区域大小*/
-    QRectF boundingRect() const override;
 public slots:
     void slotLineEdit(QString text);
 public:
