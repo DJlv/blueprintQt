@@ -44,7 +44,7 @@ QPainterPath BP_Edge::getPath() const {
 
     switch (source_port->port_type) {
         case PinType::port_type_out:
-            pos_001 = new QPointF(source_port->scenePos().x() + 15, source_port->scenePos().y() + 15);
+            pos_001 = new QPointF(source_port->scenePos().x() + 30, source_port->scenePos().y() + 15);
             break;
         case PinType::port_type_port_out:
             pos_001 = new QPointF(source_port->scenePos().x() + 25, source_port->scenePos().y() + 7);
@@ -58,7 +58,7 @@ QPainterPath BP_Edge::getPath() const {
     }
     switch (des_port->port_type) {
         case PinType::port_type_out:
-            des_001 = new QPointF(des_port->scenePos().x() + 15, des_port->scenePos().y() + 15);
+            des_001 = new QPointF(des_port->scenePos().x() + 30, des_port->scenePos().y() + 15);
             break;
         case PinType::port_type_port_out:
             des_001 = new QPointF(des_port->scenePos().x() + 15, des_port->scenePos().y() + 7);

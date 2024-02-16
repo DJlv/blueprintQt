@@ -33,7 +33,7 @@ QPainterPath DraggingEdge::getPath() const {
     QPainterPath path = QPainterPath();
     switch (source_type) {
         case PinType::port_type_out:
-            pos_001 = new QPointF(source_pos->x() + 15, source_pos->y() + 15);
+            pos_001 = new QPointF(source_pos->x() + 30, source_pos->y() + 15);
             break;
         case PinType::port_type_port_out:
             pos_001 = new QPointF(source_pos->x() + 25, source_pos->y() + 7);
@@ -50,7 +50,7 @@ QPainterPath DraggingEdge::getPath() const {
     }
     switch (des_type) {
         case PinType::port_type_out:
-            des_001 = new QPointF(des_pos->x() + 15, des_pos->y() + 15);
+            des_001 = new QPointF(des_pos->x() + 30, des_pos->y() + 15);
             break;
         case PinType::port_type_port_out:
             des_001 = new QPointF(des_pos->x() + 7, des_pos->y() + 7);
