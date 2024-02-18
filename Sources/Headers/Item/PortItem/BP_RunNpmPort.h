@@ -22,8 +22,6 @@ public slots:
     void slotLineEdit(bool text);
 public:
     bool item = false;
-
-    void InOutStyle(QPainter *painter);
 };
 
 

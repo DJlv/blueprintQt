@@ -5,18 +5,17 @@
 #include "Item/AttributeItem/BP_RunNpmAttribute.h"
 #include "Variable/BP_Variable.h"
 
-BP_RunNpmAttribute::BP_RunNpmAttribute(QWidget *parent) : BP_Attribute(parent) {
+BP_RunNpmAttribute::BP_RunNpmAttribute(QWidget *parent) : BP_BaseAttribute(parent) {
 
 }
 
 void BP_RunNpmAttribute::handleButtonClicked(BP_BasePort *nodeport) {
-    BP_Attribute::initPortAttribute();
+    BP_BaseAttribute::initPortAttribute();
     nodeportItem = nodeport;
     label1 = new QLabel("软件目录:", BP_Variable::qGroupBox); // 将标签添加到 QGroupBox
     label1->setFixedSize(70, 30);
     labelTest = new QLineEdit("D:\\newProject\\Qt\\blueprint");
     labelTest->setFixedSize(250, 30);
-
     label2 = new QLabel("npm目录:", BP_Variable::qGroupBox); // 将标签添加到 QGroupBox
     label2->setFixedSize(70, 30);
     npmProject = new QLineEdit("C:\\Users\\12141\\AppData\\Roaming\\npm");
@@ -62,6 +61,7 @@ void BP_RunNpmAttribute::buttonClicked() {
     }
 }
 void BP_RunNpmAttribute::getFile() {
+    BP_Variable::pathAll = labelTest->text();
     QFile file(labelTest->text()+"/OtherApplication/vue-test-blue-print/src/views/HomeView.vue");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         BP_Variable::textEdit->setText("打开测试文件失败");

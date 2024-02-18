@@ -28,7 +28,13 @@ MainWindow::~MainWindow() {
 void MainWindow::init() {
     BP_Variable::qGroupBox = ui->groupBox;
     BP_Variable::textEdit = ui->textEdit;
-    BP_Variable::console =  ui->console;
+    QTextOption textOption;
+
+    // 设置 tab 键的距离为 40 像素
+    textOption.setTabStopDistance(20);
+    // 将 QTextOption 应用到 QTextEdit
+    BP_Variable::textEdit->document()->setDefaultTextOption(textOption);
+    BP_Variable::console = ui->console;
     scene = new BP_GridGroupScence();
     ui->graphicsView->setScene(scene);
     update();

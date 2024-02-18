@@ -89,6 +89,20 @@ private:
     void childrenSimulation(BP_Edge *itemEdge,QList<BP_BaseNode*> NodeListsItems) const;
 
     void portRightButton(QMouseEvent *event, BP_BasePort *nodeport);
+
+    /**
+     * 右键点击Run运行按钮
+     * @param event
+     * @param blueprintNode
+     */
+    void RunRightClick(const QMouseEvent *event, const BP_BaseNode *blueprintNode) const;
+    /**
+     * 右键创建节点针脚
+     * @param event
+     * @param blueprintNode
+     * @param nodeport
+     */
+    void RightCreatePortClick(const QMouseEvent *event, BP_BaseNode *blueprintNode, const BP_BasePort *nodeport) const;
 };
 
 

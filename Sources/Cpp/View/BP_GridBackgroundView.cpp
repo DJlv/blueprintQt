@@ -6,6 +6,7 @@
 #include "Item/AttributeItem/BP_ItemTest.h"
 #include "Item/NodeItem/BP_RunNpm.h"
 #include "Item/PortItem/BP_TextPin.h"
+#include "Item/PortItem/BP_CreateBigScreen.h"
 #include <QMenu>
 #include <QtMath>
 #include <QVector>
@@ -263,7 +264,7 @@ void BP_GridBackgroundView::viewRightButton(QMouseEvent *event, BP_BaseNode *blu
         QAction *run = menu.addAction("run");
         QAction *print = menu.addAction("print");
         QAction *runNpm = menu.addAction("runNpm");
-        QAction *action4 = menu.addAction("Action 2");
+//        QAction *initBigScreen = menu.addAction("initBigScreen");
 
         QAction *selectedAction = menu.exec(event->globalPos());
         if (selectedAction == print) {
@@ -296,27 +297,38 @@ void BP_GridBackgroundView::viewRightButton(QMouseEvent *event, BP_BaseNode *blu
 void BP_GridBackgroundView::nodeRightButton(QMouseEvent *event, BP_BaseNode *blueprintNode,
                                             BP_BasePort *nodeport) {
 
+    RightCreatePortClick(event, blueprintNode, nodeport);
+
+    RunRightClick(event, blueprintNode);
+
+    update();
+}
+
+void BP_GridBackgroundView::RightCreatePortClick(const QMouseEvent *event, BP_BaseNode *blueprintNode,
+                                                 const BP_BasePort *nodeport) const {
     if (event->button() == Qt::RightButton && blueprintNode && blueprintNode->Title != "Run" && !nodeport) {
 
         QMenu menu;
         menu.setStyleSheet("QMenu { background-color: #696969;border-radius: 10px; }");
         QAction *print = menu.addAction("添加日志");
-        QAction *action2 = menu.addAction("Action 2");
+        QAction *initBigScreen = menu.addAction("initBigScreen");
         QAction *action3 = menu.addAction("Action 2");
         QAction *action4 = menu.addAction("Action 2");
 
         QAction *selectedAction = menu.exec(event->globalPos());
         if (selectedAction == print) {
-            BP_BasePort *printPin = new BP_TextPin(PinType::port_type_port_in, blueprintNode);
+            BP_BasePort *printPin = new BP_TextPin(port_type_port_in, blueprintNode);
             blueprintNode->portInList.append(printPin);
-
-        } else if (selectedAction == action2) {
+        } else if (selectedAction == initBigScreen) {
             // 执行 Action 2 对应的操作
+            BP_BasePort *printPin = new BP_CreateBigScreen(port_type_port_in, blueprintNode);
+            blueprintNode->portInList.append(printPin);
         }
     }
+}
 
+void BP_GridBackgroundView::RunRightClick(const QMouseEvent *event, const BP_BaseNode *blueprintNode) const {
     if (event->button() == Qt::RightButton && blueprintNode && blueprintNode->Title == "Run") {
-
         QMenu menu;
         menu.setStyleSheet("QMenu { background-color: #696969;border-radius: 10px; }");
         QAction *print = menu.addAction("Run");
@@ -335,8 +347,6 @@ void BP_GridBackgroundView::nodeRightButton(QMouseEvent *event, BP_BaseNode *blu
             }
         }
     }
-
-    update();
 }
 
 void BP_GridBackgroundView::childrenSimulation(BP_Edge *itemEdge, QList<BP_BaseNode *> NodeListsItems) const {
@@ -376,7 +386,7 @@ void BP_GridBackgroundView::addNodeEdge(BP_BaseNode *startNode, BP_BaseNode *end
     startNode->add_Edge(edge);
     endNode->add_Edge(edge);
     scene()->addItem(edge);
-    BP_Variable::EdgeLists.append(edge);
+//    BP_Variable::EdgeLists.append(edge);
     fledge = false;
     source_port->update();
     des_port->update();

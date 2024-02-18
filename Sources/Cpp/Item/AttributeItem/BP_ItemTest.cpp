@@ -13,7 +13,7 @@ BP_ItemTest::BP_ItemTest(QWidget *parent) {
 }
 
 void BP_ItemTest::handleButtonClicked(BP_BasePort *nodeport) {
-    BP_Attribute::initPortAttribute();
+    BP_BaseAttribute::initPortAttribute();
     nodeportItem = nodeport;
     label = new QLabel("日志文本:", BP_Variable::qGroupBox); // 将标签添加到 QGroupBox
     label->setFixedSize(70, 30);
@@ -68,13 +68,4 @@ void BP_ItemTest::buttonClicked() {
     }
 }
 
-void BP_ItemTest::buttonCloseClicked() {
-    QProcess process;
-    if (start) {
-        process.start("taskkill", QStringList() << "/f" << "/im" << "node.exe");
-        process.waitForStarted();
-        process.waitForFinished();
-        BP_Variable::textEdit->setText(QString::fromLocal8Bit(process.readAllStandardOutput()));
-    }
-}
 

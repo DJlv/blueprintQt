@@ -6,7 +6,7 @@
 
 
 QList<BP_BaseNode*> BP_Variable::NodeLists;
-QList<BP_Edge*> BP_Variable::EdgeLists;
+//QList<BP_Edge*> BP_Variable::EdgeLists;
 QGroupBox* BP_Variable::qGroupBox;
 QTextEdit* BP_Variable::textEdit;
 QTextEdit* BP_Variable::console;
@@ -41,5 +41,34 @@ void BP_Variable::getItemFile(){
         BP_Variable::textEdit->setText(content);
     }
 }
-
+QString BP_Variable::getAgesFile(QString path,QString str) {
+    if(pathAll == nullptr || pathAll == "") {
+        console->setText("请在输入如见所在路径");
+    }
+    QFile file( pathAll+"/"+path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return "打开测试文件失败";
+    } else {
+        // 将文件内容读入到字符串变量中
+        QString content = "";
+        QTextStream in(&file);
+        bool flage = false;
+        while(!in.atEnd()) {
+            QString strcItem = QString(in.readLine());
+            if(QString("/--/-*"+str+"*-/-start-/") == strcItem) {
+                flage = true;
+                continue;
+            }
+            if(QString("/--/-*"+str+"*-/-end-/") == strcItem) {
+                flage = false;
+                continue;
+            }
+            if(flage) {
+                content += strcItem+"\n";
+            }
+        }
+        file.close();
+        return content;
+    }
+}
 

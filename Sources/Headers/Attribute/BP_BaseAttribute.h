@@ -2,18 +2,18 @@
 // Created by admin on 2024/2/15.
 //
 
-#ifndef BLUEPRINT_BP_ATTRIBUTE_H
-#define BLUEPRINT_BP_ATTRIBUTE_H
+#ifndef BLUEPRINT_BP_BASEATTRIBUTE_H
+#define BLUEPRINT_BP_BASEATTRIBUTE_H
 #include <QObject>
 #include <QGroupBox>
 #include <QVBoxLayout>
 #include "Port/BP_BasePort.h"
 
 class BP_BasePort;
-class BP_Attribute:  public QWidget  {
+class BP_BaseAttribute: public QWidget  {
 Q_OBJECT
 public:
-    explicit BP_Attribute(QWidget *parent = nullptr);
+    explicit BP_BaseAttribute(QWidget *parent = nullptr);
 
 private:
     QVBoxLayout *layout = nullptr;
@@ -26,4 +26,4 @@ public:
 };
 
 
-#endif //BLUEPRINT_BP_ATTRIBUTE_H
+#endif //BLUEPRINT_BP_BASEATTRIBUTE_H

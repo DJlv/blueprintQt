@@ -24,6 +24,7 @@ namespace BP_Variable {
     extern QString pathAll;
 
     void getItemFile();
+    QString getAgesFile(QString path,QString str);
     void AddNodeToList();
 
     void getPlintConsole(const QString str);

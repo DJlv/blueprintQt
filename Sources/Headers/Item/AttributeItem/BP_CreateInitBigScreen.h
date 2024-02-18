@@ -1,9 +1,10 @@
 //
-// Created by admin on 2024/1/7.
+// Created by admin on 2024/2/17.
 //
 
-#ifndef BLUEPRINT_BP_ITEMTEST_H
-#define BLUEPRINT_BP_ITEMTEST_H
+#ifndef BLUEPRINT_BP_CREATEINITBIGSCREEN_H
+#define BLUEPRINT_BP_CREATEINITBIGSCREEN_H
+
 #include <QObject>
 #include <QGroupBox>
 #include <QPushButton>
@@ -13,36 +14,36 @@
 #include <QProcess>
 
 #include "Port/BP_BasePort.h"
+#include "Variable/BP_Variable.h"
 #include "Attribute/BP_BaseAttribute.h"
+#include "Signals/BP_BaseSignal.h"
+#include "Item/Signal/BP_CreateInitSignal.h"
 
-class BP_ItemTest: public BP_BaseAttribute {
-    Q_OBJECT
+class BP_CreateInitBigScreen: public BP_BaseAttribute {
+Q_OBJECT
 public:
-    explicit BP_ItemTest(QWidget *parent = nullptr);
-
+    explicit BP_CreateInitBigScreen(QWidget *parent = nullptr);
 /**
  * 信号
  */
 signals:
-    void pushStyle(QString text);
+    void pushStyle(BP_BaseSignal* signlePasser);
 /**
  * 槽
  */
 public slots:
     void handleButtonClicked(BP_BasePort *nodeport);
-    void buttonClicked();
     void lableClicked();
+
 private:
+    BP_CreateInitSignal* signleItem;
     BP_BasePort *nodeportItem;
     QLabel *label = nullptr;
-    QLineEdit *labelTest = nullptr;
-    QLineEdit *npmProject = nullptr;
     QLineEdit *lineEdit = nullptr;
     QString orglinight = "";
-    bool start = false;
 public:
     void endLayout();
 };
 
 
-#endif //BLUEPRINT_BP_ITEMTEST_H
+#endif //BLUEPRINT_BP_CREATEINITBIGSCREEN_H

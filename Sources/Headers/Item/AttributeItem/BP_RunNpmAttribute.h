@@ -14,9 +14,9 @@
 #include <QFile>
 
 #include "Port/BP_BasePort.h"
-#include "Attribute/BP_Attribute.h"
+#include "Attribute/BP_BaseAttribute.h"
 
-class BP_RunNpmAttribute: public BP_Attribute {
+class BP_RunNpmAttribute: public BP_BaseAttribute {
 Q_OBJECT
 public:
     explicit BP_RunNpmAttribute(QWidget *parent = nullptr);

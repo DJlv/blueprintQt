@@ -15,11 +15,11 @@
 #include <Node/BP_BaseNode.h>
 #include "Port/PinType.h"
 #include "Edge/BP_Edge.h"
-#include "Attribute/BP_Attribute.h"
+#include "Attribute/BP_BaseAttribute.h"
 
 class  BP_BaseNode;
 class BP_Edge;
-class BP_Attribute;
+class BP_BaseAttribute;
 class BP_BasePort :public QObject,public QGraphicsItem {
     Q_OBJECT
 public:
@@ -48,7 +48,7 @@ public:
     bool flage = false;
     QList<BP_Edge*> edgeList;
     BP_BaseNode* node;
-    BP_Attribute* attribute;
+    BP_BaseAttribute* attribute;
 
 };
 
